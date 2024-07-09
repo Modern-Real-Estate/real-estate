@@ -1,5 +1,5 @@
-### Real-Estate Project
-# First project to mark my career with spring framework
+# Real-Estate Project
+### First project to mark my career with spring framework
 Developing a real-estate platform with Spring Boot, Spring Data JPA, Hibernate, Spring Security, MySQL, and WebSocket involves creating a comprehensive and high-performance application that meets modern web standards. Spring Boot serves as the backbone, providing a streamlined and efficient framework for rapid development. Spring Data JPA and Hibernate work together to offer seamless integration with MySQL, enabling efficient data management and complex queries for property listings, user profiles, and transactions. Implementing Spring Security ensures robust authentication and authorization, safeguarding user data and maintaining secure transactions. WebSocket integration facilitates real-time communication, allowing instant updates for users on new property listings, price changes, and user messages. The platform can support features like advanced search functionality, user reviews, and detailed property descriptions with images and videos. With a responsive and intuitive user interface, the application offers an exceptional user experience across devices. This powerful combination of technologies ensures a reliable, secure, and interactive real-estate platform designed to meet the needs of both buyers and sellers in the digital age.
-## This is the database diagram of this project
+# This is the database diagram of this project
 ![Untitled (1)](https://github.com/winnguyen1905/real-estate/assets/140900453/b423df5b-3d58-413d-8992-9ce1cf1d680e)

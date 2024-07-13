@@ -8,12 +8,10 @@ import lombok.Setter;
 @SuppressWarnings("rawtypes")
 public class BuildingDTO extends AbstractDTO {
     private String name;
-    private String ward;
-    private String street;
     private String rentPriceDescription;
     private String structure;
     private String district;
-    // private Long numberOfBasement;
+    private Long numberOfBasement;
     // private Long floorArea;
     // private String direction;
     // private String level;

@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 @Setter
 @Entity
 @Table(name = "building")
-public class BuildingEntity extends BaseEntity {
+public class BuildingEntity extends BaseEntity { 
     @Column(name = "name")
     private String name;
     @Column(name = "street")
@@ -58,8 +58,10 @@ public class BuildingEntity extends BaseEntity {
     private Integer brokerageFee;
     @Column(name = "type")
     private String typeCode;
+
     @Column(name = "avatar")
     private String avatar;
+
     @Column(name = "managername")
     private String managerName;
     @Column(name = "managerphone")

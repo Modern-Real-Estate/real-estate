@@ -16,43 +16,58 @@ import com.loinguyen1905.realestate.repository.custom.BuildingRepositoryCustom;
 
 import jakarta.persistence.*;
 
-@Repository
 @Primary
+@Repository
 public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom  {
     
     @PersistenceContext(type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
-    public static String conditionToString(Field field, BuildingSearchBuilder buildingSearchBuilder) {
+    public static Boolean fieldNameChecking(String fieldName) {
+        return 
+            fieldName.equals("staffId") || 
+            fieldName.equals("typeCode") || 
+            fieldName.startsWith("area") || 
+            fieldName.startsWith("rentPrice");
+    }
+
+    public static String toSqlStatement(Field field, BuildingSearchBuilder buildingSearchBuilder) {
         String result = "";
         try {
             field.setAccessible(true);
+            String fieldName = field.getName();
             Object x = field.get(buildingSearchBuilder);
-            if(x == null) result = "";
+            if(x == null || !fieldNameChecking(fieldName)) result = "";
             else if(x.getClass().getName().equals("java.lang.String")) result = " or b." + field.getName() + " like '%" + x.toString() + "%' "; 
-            else result = " or b." + field.getName() + " = " + x.toString(); 
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            // TODO Auto-generated catch block
+            else result = " or b." + field.getName() + " = " + x.toString() + ' ';
+        } catch (Exception e) { 
             e.printStackTrace();
         }
         return result;
     }
 
-    public static void queryNormal(StringBuilder s, BuildingSearchBuilder buildingSearchBuilder) {
+    public static void queryNormal(StringBuilder sql, BuildingSearchBuilder buildingSearchBuilder) {
         Field[] fields = buildingSearchBuilder.getClass().getDeclaredFields();
-        String newTemplete = Arrays.asList(fields).stream().map(item -> conditionToString(item, buildingSearchBuilder)).collect(Collectors.joining(" "));
-        s.append(newTemplete);
+        String newTemplete = Arrays.asList(fields).stream().map(item -> toSqlStatement(item, buildingSearchBuilder)).collect(Collectors.joining(""));
+        sql.append(newTemplete);
     }
 
-    public static void queryEnhance(StringBuilder s, BuildingSearchBuilder buildingSearchBuilder) {
+    public static void joinTable(StringBuilder sql, BuildingSearchBuilder buildingSearchBuilder) {
+
+    }
+
+    public static void querySpecial(StringBuilder s, BuildingSearchBuilder buildingSearchBuilder) {
 
     }
 
     @Override
     @Transactional
+    @SuppressWarnings("unchecked")
     public List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder) {
         StringBuilder sql = new StringBuilder("select b.* from building as b where 1 = 1");
         queryNormal(sql, buildingSearchBuilder);
+        joinTable(sql, buildingSearchBuilder);
+        querySpecial(sql, buildingSearchBuilder);
         Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
         return query.getResultList();
     }

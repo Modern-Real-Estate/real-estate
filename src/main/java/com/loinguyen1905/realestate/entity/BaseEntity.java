@@ -1,5 +1,6 @@
 package com.loinguyen1905.realestate.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

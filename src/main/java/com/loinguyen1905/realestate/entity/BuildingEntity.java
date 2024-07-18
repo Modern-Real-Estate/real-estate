@@ -1,6 +1,7 @@
 package com.loinguyen1905.realestate.entity;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +24,7 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "structure")
     private String structure;
     @Column(name = "numberofbasement")
-    private Long numberOfBasement;
+    private Integer numberOfBasement;
     @Column(name = "floorarea")
     private Integer floorArea;
     @Column(name = "direction")
@@ -68,7 +69,7 @@ public class BuildingEntity extends BaseEntity {
     private String managerPhone;
     
     @OneToMany(mappedBy = "building")
-    private List<RentAreaEntity> rentAreaEntities = new ArrayList<RentAreaEntity>();
+    private List<RentAreaEntity> rentAreas = new ArrayList<RentAreaEntity>();
 
     @ManyToOne
     @JoinColumn(name = "districtid")

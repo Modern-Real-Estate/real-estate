@@ -1,0 +1,16 @@
+@url=http://localhost:8080/api
+
+POST {{url}}/buildings/
+Content-Type: application/json
+
+{
+    "name": "YJ Entertatiment",
+    "rentPriceDescription": "No desc",
+    "structure": "Silicon",
+    "ward": "Floria",
+    "street": "Tryment",
+    "districtId": 8,
+    "numberOfBasement": "2",
+    "floorArea": "4",
+    "direction": "South"
+}

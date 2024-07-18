@@ -1,21 +1,23 @@
 package com.loinguyen1905.realestate.model.dto;
 
 import lombok.Getter;
-import lombok.Setter; 
+import lombok.Setter;
 
 @Getter
 @Setter
 @SuppressWarnings("rawtypes")
-public class BuildingDTO extends AbstractDTO {
+public class BuildingRequestDTO extends AbstractDTO {
     private String name;
     private String rentPriceDescription;
     private String structure;
-    private String address;
-    private Long numberOfBasement;
-    // private Long floorArea;
-    // private String direction;
+    private String ward;
+    private String street;
+    private Long districtId;
+    private Integer numberOfBasement;
+    private Integer floorArea;
+    private String direction;
     // private String level;
-    private String rentArea;
+    // private String rentArea;
     // private Integer rentPrice;
     // private String serviceFee;
     // private String carFee;

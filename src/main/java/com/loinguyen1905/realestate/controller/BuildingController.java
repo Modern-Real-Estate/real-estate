@@ -1,10 +1,9 @@
-package com.loinguyen1905.realestate.api;
+package com.loinguyen1905.realestate.controller;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
@@ -17,16 +16,19 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+
 @RestController
-public class BuildingAPI {
+@RequestMapping("/api/buildings/")
+public class BuildingController {
 
     @Autowired
     private BuildingService buildingService;
 
-    @GetMapping("/api/buildings/")
+    @GetMapping("/")
     public List<BuildingDTO> getBuilding(
         @RequestParam(required = false) Map<String, Object> params, 
         @RequestParam(name = "typeCode", required = false) List<String> typeCode
@@ -34,28 +36,42 @@ public class BuildingAPI {
         return buildingService.findAll(params, typeCode);
     }
 
-    @GetMapping("/api/buildings/{id}")
+    @GetMapping("/{id}")
     public BuildingDTO getBuildingById(
         @PathVariable(required = true) Long id
     ) {
         return buildingService.findBuildingById(id);
     }
 
-    @PostMapping("/api/buildings/")
+    @PostMapping("/")
     public BuildingDTO createBuilding(
         @RequestBody BuildingRequestDTO buildingRequestDTO
     ) {
         return buildingService.createBuilding(buildingRequestDTO);
     }
     
-    @PatchMapping("/api/buildings/")
+    @PatchMapping("/")
     public List<BuildingDTO> updateBuilding() {
         return null;
     }
-    @DeleteMapping("/api/buildings/{ids}")
+
+    @DeleteMapping("/{ids}")
     public Boolean deleteBuildingById(
         @PathVariable(required = true) List<Long> ids
     ) {
         return buildingService.deleteBuildingsByIds(ids);
     }
+
+    // ADMIN END-POINT
+
+    @GetMapping("/admin/building")
+    public String buildingList(@RequestParam String param) {
+        return new String();
+    }
+    
+    @GetMapping("/admin/building-edit")
+    public String buildingEdit(@RequestParam String param) {
+        return new String();    
+    }
+
 }

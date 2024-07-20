@@ -11,4 +11,10 @@ public interface BuildingService {
     BuildingDTO findBuildingById(Long id);
     Boolean deleteBuildingsByIds(List<Long> ids);
     BuildingDTO createBuilding(BuildingRequestDTO buildingRequestDTO);
+
+    // void updateOraddBuilding(BuildingDTO buildingDTO);
+    // void deleteBuildings(List<Long> ids);
+    // ResponseDTO loadStaffs(Long buildingId);
+    // void updateAssignment(AssignmentDTO assignmentBuildingDTO);
+    // int countTotalItems(BuildingSearchRequest buildingSearchRequest, Pageable pageable);
 }

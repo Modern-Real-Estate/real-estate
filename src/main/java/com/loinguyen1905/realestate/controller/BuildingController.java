@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.dto.BuildingRequestDTO;
-import com.loinguyen1905.realestate.service.BuildingService;
+import com.loinguyen1905.realestate.service.IBuildingService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BuildingController {
 
     @Autowired
-    private BuildingService buildingService;
+    private IBuildingService buildingService;
 
     @GetMapping("/")
     public List<BuildingDTO> getBuilding(
@@ -47,7 +47,7 @@ public class BuildingController {
     public BuildingDTO createBuilding(
         @RequestBody BuildingRequestDTO buildingRequestDTO
     ) {
-        return buildingService.createBuilding(buildingRequestDTO);
+        return buildingService.addBuilding(buildingRequestDTO);
     }
     
     @PatchMapping("/")

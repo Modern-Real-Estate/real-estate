@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,10 @@ import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.dto.BuildingRequestDTO;
 import com.loinguyen1905.realestate.repository.BuildingRepository;
 import com.loinguyen1905.realestate.repository.DistrictRepository;
-import com.loinguyen1905.realestate.service.BuildingService;
+import com.loinguyen1905.realestate.service.IBuildingService;
 
 @Service
-public class BuildingServiceImpl implements BuildingService {
+public class BuildingService implements IBuildingService {
 
     @Autowired
     private BuildingRepository buildingRepository;
@@ -65,7 +64,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public BuildingDTO createBuilding(BuildingRequestDTO buildingRequestDTO) {
+    public BuildingDTO addBuilding(BuildingRequestDTO buildingRequestDTO) {
         BuildingEntity newBuilding = new BuildingEntity();
         newBuilding.setName(buildingRequestDTO.getName());
         newBuilding.setRentPriceDescription(buildingRequestDTO.getRentPriceDescription());

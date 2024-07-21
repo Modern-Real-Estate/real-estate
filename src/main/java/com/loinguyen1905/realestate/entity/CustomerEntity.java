@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
-public class UserEntity extends BaseEntity {
+@Table(name = "customer")
+public class CustomerEntity extends BaseEntity {
     private static final long serialVersionUID = -4988455421375043688L;
 
     @Column(name = "username", nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @Column(name = "fullname", nullable = false)
     private String fullName;

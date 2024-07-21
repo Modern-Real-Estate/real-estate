@@ -6,11 +6,11 @@ import java.util.Map;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.dto.BuildingRequestDTO;
 
-public interface BuildingService {
+public interface IBuildingService {
     List<BuildingDTO> findAll(Map<String, Object> params, List<String> typeCode);
     BuildingDTO findBuildingById(Long id);
     Boolean deleteBuildingsByIds(List<Long> ids);
-    BuildingDTO createBuilding(BuildingRequestDTO buildingRequestDTO);
+    BuildingDTO addBuilding(BuildingRequestDTO buildingRequestDTO);
 
     // void updateOraddBuilding(BuildingDTO buildingDTO);
     // void deleteBuildings(List<Long> ids);

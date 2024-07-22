@@ -1,5 +1,7 @@
 package com.loinguyen1905.realestate.model.dto;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +13,7 @@ public class BuildingRequestDTO extends AbstractDTO<BuildingRequestDTO> {
     private String structure;
     private String ward;
     private String street;
-    private Long districtId;
+    private UUID districtId;
     private Integer numberOfBasement;
     private Integer floorArea;
     private String direction;

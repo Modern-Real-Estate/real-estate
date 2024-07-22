@@ -30,18 +30,16 @@ public class SecurityUtil {
     @Autowired
     private JwtEncoder jwtEncoder;
 
-    @Autowired 
+    @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Value("${winnguyen1905.jwt.token-validity-in-seconds}")
     private String jwtExpiration;
 
     public String createToken(Authentication authentication) {
-
         Instant now = Instant.now();
         Instant validity  = now.plus(Long.parseLong(jwtExpiration), ChronoUnit.SECONDS);
 
-        // @formatter:off
         JwtClaimsSet claims = JwtClaimsSet.builder()
             .issuedAt(now)
             .expiresAt(validity)

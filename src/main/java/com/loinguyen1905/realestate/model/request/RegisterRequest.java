@@ -10,10 +10,10 @@ import lombok.*;
 @Builder
 public class RegisterRequest {
     @NotBlank
-    @Email
+    @Email(message = "Email format must be 'prefix@subfix.domain'")
     private String email;
 
-    @Size(min = 8, message = "password length must > 7")
+    @Size(min = 8, message = "The password must be length  > 7")
     private String password;
 
     @NotBlank

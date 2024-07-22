@@ -17,12 +17,6 @@ public class CustomerService implements ICustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private CustomerConverter customerConverter;
-
-    @Autowired
-    private  PasswordEncoder passwordEncoder;
-
     @Override
     public CustomerEntity handlegetUserByUsername(String username) {
         CustomerEntity customer = customerRepository.findByEmail(username);

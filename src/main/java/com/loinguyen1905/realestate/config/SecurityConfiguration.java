@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@Configurable
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
@@ -32,7 +31,7 @@ public class SecurityConfiguration {
     ) throws Exception {
         http
             .csrf(c -> c.disable())
-            .cors(c -> c.disable())
+            .cors(Customizer.withDefaults())
             .authorizeHttpRequests(
                 authz -> authz
                     .requestMatchers("/auth/**").permitAll()
@@ -41,17 +40,16 @@ public class SecurityConfiguration {
             .oauth2ResourceServer(
                 (oauth2) -> oauth2
                     .jwt(Customizer.withDefaults())
-                    .authenticationEntryPoint(customAuthenticationEntryPoint)
-            ) 
-            .exceptionHandling(
-                (exceptions) -> exceptions
-                    .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) // 401
-                    .accessDeniedHandler(new BearerTokenAccessDeniedHandler()) // 403
+                    .authenticationEntryPoint(customAuthenticationEntryPoint) // Override customize invalid token in response
             )
+            // .exceptionHandling(
+            //     (exceptions) -> exceptions
+            //         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) // 401
+            //         .accessDeniedHandler(new BearerTokenAccessDeniedHandler()) // 403
+            // )
             .formLogin(f -> f.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Model working with security to Restful APIs web service the stateless is default
 
         return http.build();
     }
-
 }

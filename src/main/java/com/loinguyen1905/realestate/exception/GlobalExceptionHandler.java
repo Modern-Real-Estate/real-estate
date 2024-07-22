@@ -38,19 +38,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(restResponse);
     }
 
-    // @ExceptionHandler({ AuthenticationException.class })
-    // public ResponseEntity<RestResponse<Object>> handleAuthenticationException(AuthenticationException ex) {
-
-    //     RestResponse<Object> re = RestResponse
-    //         .builder()
-    //         .statusCode(HttpStatus.UNAUTHORIZED.value())
-    //         .error("Authentication failed at controller advice")
-    //         .message(ex.getMessage())
-    //         .build();
-            
-    //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(re);
-    // }
-
     @ExceptionHandler(value = {
         UsernameNotFoundException.class,
         BadRequestException.class,
@@ -60,7 +47,7 @@ public class GlobalExceptionHandler {
         RestResponse<Object> restResponse = RestResponse
             .builder()
             .statusCode(HttpStatus.BAD_REQUEST.value())
-            .message("Exception occurs please check your information")
+            .message("Exception occurs please check your informations")
             .error(ex.getMessage()).build();
         return ResponseEntity.badRequest().body(restResponse);
     }
@@ -76,7 +63,7 @@ public class GlobalExceptionHandler {
             .builder()
             .statusCode(HttpStatus.BAD_REQUEST.value())
             .message("Data constraint in your resquest invalid or non-unique")
-            .error("Email or username was used").build();
+            .error("Data must be unique but maybe used").build();
         return ResponseEntity.badRequest().body(restResponse);
     }
     

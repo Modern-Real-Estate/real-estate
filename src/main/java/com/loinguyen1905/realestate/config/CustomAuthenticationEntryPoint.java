@@ -1,6 +1,8 @@
 package com.loinguyen1905.realestate.config;
 
 import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -26,16 +28,18 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(
         HttpServletRequest request, HttpServletResponse response, AuthenticationException authException
     ) throws IOException, ServletException {
-                
         delegate.commence(request, response, authException);
-
         response.setContentType("application/json;charset=UTF-8");
 
         RestResponse<Object> res = RestResponse
             .builder()
             .statusCode(HttpStatus.UNAUTHORIZED.value())
             .message("Authentication failed please check your token :3")
-            .error(authException.getCause().getMessage())
+            .error(
+                Optional.ofNullable(authException.getCause())
+                    .map(Throwable::getMessage)
+                    .orElse(authException.getMessage())
+            )
             .build();
 
         mapper.writeValue(response.getWriter(), res);

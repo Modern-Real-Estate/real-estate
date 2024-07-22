@@ -2,6 +2,7 @@ package com.loinguyen1905.realestate.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class BuildingController {
 
     @GetMapping("/{id}")
     public BuildingDTO getBuildingById(
-        @PathVariable(required = true) Long id
+        @PathVariable(required = true) UUID id
     ) {
         return buildingService.findBuildingById(id);
     }
@@ -57,7 +58,7 @@ public class BuildingController {
 
     @DeleteMapping("/{ids}")
     public Boolean deleteBuildingById(
-        @PathVariable(required = true) List<Long> ids
+        @PathVariable(required = true) List<UUID> ids
     ) {
         return buildingService.deleteBuildingsByIds(ids);
     }

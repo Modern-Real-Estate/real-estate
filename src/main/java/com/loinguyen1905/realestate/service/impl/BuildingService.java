@@ -3,6 +3,7 @@ package com.loinguyen1905.realestate.service.impl;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    public BuildingDTO findBuildingById(Long id) {
+    public BuildingDTO findBuildingById(UUID id) { 
         Optional<BuildingEntity> building = buildingRepository.findById(id);
         try {
             return buildingConverter.toBuildingDTO(building.get());
@@ -53,7 +54,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    public Boolean deleteBuildingsByIds(List<Long> ids) {
+    public Boolean deleteBuildingsByIds(List<UUID> ids) {
         try {
             buildingRepository.deleteByIdIn(ids);
             return true;

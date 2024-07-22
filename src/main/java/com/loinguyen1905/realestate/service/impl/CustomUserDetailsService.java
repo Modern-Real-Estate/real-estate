@@ -22,7 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        
         CustomerEntity customer = customerService.handlegetUserByUsername(username);
 
         if(customer == null) {
@@ -37,5 +36,4 @@ public class CustomUserDetailsService implements UserDetailsService {
             .authorities(authorities)
             .build();
     }
-    
 }

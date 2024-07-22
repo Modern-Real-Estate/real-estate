@@ -24,14 +24,9 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
     @Override
     @Nullable
     public Object beforeBodyWrite(
-        @Nullable Object body, 
-        MethodParameter returnType, 
-        MediaType selectedContentType,
-        Class selectedConverterType, 
-        ServerHttpRequest request, 
-        ServerHttpResponse response
+        @Nullable Object body, MethodParameter returnType, MediaType selectedContentType,
+        Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response
     ) {
-         
         if(body instanceof String) return body;
 
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
@@ -39,13 +34,11 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
         RestResponse<Object> restResponse = RestResponse.builder().statusCode(statusCode).build();
 
-        if(statusCode > 399) {
-            return body;
-        } else {
+        if(statusCode > 399) return body;
+        else {
             restResponse.setData((Object) body);
             restResponse.setMessage("Success");
         }
         return restResponse;
     }
-    
 }

@@ -34,8 +34,10 @@ public class AuthService {
 
     public AuthenResponse login(LoginRequest loginRequest) {
         Authentication authenticResults = securityUtil.authentication(loginRequest);
-        String access_token = securityUtil.createToken(authenticResults);
         SecurityContextHolder.getContext().setAuthentication(authenticResults);
+
+        String access_token = securityUtil.createToken(authenticResults);
+
         return AuthenResponse.builder()
                 .accessToken(access_token)
                 .email(loginRequest.getUsername())
@@ -43,7 +45,6 @@ public class AuthService {
     }
 
     public AuthenResponse register(RegisterRequest registerRequest) {
-
         CustomerEntity customerEntity = customerConverter.toCustomerEnity(registerRequest);
         customerEntity.setPassword(passwordEncoder.encode(customerEntity.getPassword()));
         customerEntity = customerRepository.save(customerEntity);

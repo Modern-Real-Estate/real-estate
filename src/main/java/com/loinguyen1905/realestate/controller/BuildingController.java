@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("/api/buildings/")
+@RequestMapping("/buildings")
 public class BuildingController {
 
     @Autowired

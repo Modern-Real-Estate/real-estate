@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.loinguyen1905.realestate.builder.BuildingSearchBuilder;
-import com.loinguyen1905.realestate.converter.BuildingDTOConverter;
+import com.loinguyen1905.realestate.converter.BuildingConverter;
 import com.loinguyen1905.realestate.converter.BuildingSearchBuilderConverter;
 import com.loinguyen1905.realestate.entity.BuildingEntity;
 import com.loinguyen1905.realestate.entity.DistrictEntity;
@@ -31,13 +31,13 @@ public class BuildingService implements IBuildingService {
     private DistrictRepository districtRepository;
 
     @Autowired
-    private BuildingDTOConverter buildingDTOConverter;
+    private BuildingConverter buildingConverter;
 
     @Override
     public List<BuildingDTO> findAll(Map<String, Object> params, List<String> typeCode) {
         BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(params, typeCode);
         List<BuildingEntity> raw = buildingRepository.findAll(buildingSearchBuilder);
-        List<BuildingDTO> res = raw.stream().map(item -> buildingDTOConverter.toBuildingDTO(item)).toList();
+        List<BuildingDTO> res = raw.stream().map(item -> buildingConverter.toBuildingDTO(item)).toList();
         return res;
     }
 
@@ -45,7 +45,7 @@ public class BuildingService implements IBuildingService {
     public BuildingDTO findBuildingById(Long id) {
         Optional<BuildingEntity> building = buildingRepository.findById(id);
         try {
-            return buildingDTOConverter.toBuildingDTO(building.get());
+            return buildingConverter.toBuildingDTO(building.get());
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -82,6 +82,6 @@ public class BuildingService implements IBuildingService {
             newBuilding.setDistrict(null);
         }
         newBuilding = buildingRepository.save(newBuilding);
-        return buildingDTOConverter.toBuildingDTO(newBuilding);
+        return buildingConverter.toBuildingDTO(newBuilding);
     }
 }

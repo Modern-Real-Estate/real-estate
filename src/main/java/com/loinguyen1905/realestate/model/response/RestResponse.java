@@ -2,8 +2,7 @@ package com.loinguyen1905.realestate.model.response;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
 public class RestResponse<T> {
     private int statusCode;

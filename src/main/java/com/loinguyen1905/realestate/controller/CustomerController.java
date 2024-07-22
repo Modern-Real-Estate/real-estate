@@ -6,22 +6,20 @@ import com.loinguyen1905.realestate.entity.CustomerEntity;
 import com.loinguyen1905.realestate.service.impl.CustomerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 
 @RestController
+@RequestMapping("/customers")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/api/v1/customers/{username}")
+    @GetMapping("/{username}")
     public CustomerEntity getMethodName(
         @PathVariable("username") String username
     ) {

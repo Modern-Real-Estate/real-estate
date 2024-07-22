@@ -12,7 +12,7 @@ import com.loinguyen1905.realestate.entity.RentAreaEntity;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 
 @Component
-public class BuildingDTOConverter {
+public class BuildingConverter {
     
     @Autowired
     private ModelMapper modelMapper;

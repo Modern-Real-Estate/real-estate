@@ -7,11 +7,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "rentarea")
-public class RentAreaEntity extends BaseEntity{
+public class RentAreaEntity extends BaseEntity {
+
     @Column(name = "value", nullable = false)
     private Integer value;
 
     @ManyToOne
     @JoinColumn(name = "buildingid")
     BuildingEntity building;
+    
 }

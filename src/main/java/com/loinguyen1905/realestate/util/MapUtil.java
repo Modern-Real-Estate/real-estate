@@ -1,8 +1,8 @@
-package com.loinguyen1905.realestate.utils;
+package com.loinguyen1905.realestate.util;
 
 import java.util.Map;
 
-public class MapUtils {
+public class MapUtil {
     public static <T> T getObject(Map<String, Object> params, String key, Class<T> tClass) {
         Object obj = params.getOrDefault(key, null);
         if(obj != null && !obj.equals("")) {

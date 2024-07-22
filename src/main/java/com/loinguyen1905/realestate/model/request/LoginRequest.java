@@ -7,10 +7,12 @@ import lombok.*;
 @Builder    
 public class LoginRequest {
 
-    @NotBlank(message = "username not blank")
+    @Email(message = "email have type example@email.com")
+    @NotBlank(message = "username invalid")
     private String username;
 
-    @NotBlank(message = "password not blank")
+    @Size(min = 8, max = 20, message = "password's size must >= 8")
+    @NotBlank(message = "password invalid")
     private String password;
 
 }

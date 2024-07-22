@@ -8,23 +8,30 @@ import lombok.Setter;
 @Entity
 @Table(name = "customer")
 public class CustomerEntity extends BaseEntity {
+
     private static final long serialVersionUID = -4988455421375043688L;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "frist_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "fullname", nullable = false)
-    private String fullName;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private Boolean status;
 
     @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "phone", nullable = true)
     private String phone;
+    
+    @PrePersist
+    public void prePersist() {
+        this.status = true;
+        super.prePersist();
+    }
 }

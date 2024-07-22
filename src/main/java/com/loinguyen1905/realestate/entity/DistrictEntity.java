@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
-// @Builder
 @Table(name = "district")
 public class DistrictEntity extends BaseEntity { 
     @Column(name = "name")
@@ -20,7 +17,6 @@ public class DistrictEntity extends BaseEntity {
     @Column(name = "code")
     private String code;
 
-    // @Builder.Default
     @OneToMany(mappedBy = "district", fetch = FetchType.LAZY)
     private List<BuildingEntity> buildingEntities = new ArrayList<BuildingEntity>();
 

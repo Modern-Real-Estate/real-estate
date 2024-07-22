@@ -1,6 +1,6 @@
-package com.loinguyen1905.realestate.utils;
+package com.loinguyen1905.realestate.util;
 
-public final class StringUtils {
+public final class StringUtil {
     public static Boolean check(String s) {
         return s.equals("") || s == null;
     }

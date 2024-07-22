@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.utils;
+package com.loinguyen1905.realestate.util;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -31,6 +31,9 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         ServerHttpRequest request, 
         ServerHttpResponse response
     ) {
+         
+        if(body instanceof String) return body;
+
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
         int statusCode = servletResponse.getStatus();
 
@@ -39,7 +42,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         if(statusCode > 399) {
             return body;
         } else {
-            restResponse.setData(body);
+            restResponse.setData((Object) body);
             restResponse.setMessage("Success");
         }
         return restResponse;

@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@SuppressWarnings("rawtypes")
-public class BuildingDTO extends AbstractDTO {
+public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String name;
     private String rentPriceDescription;
     private String structure;

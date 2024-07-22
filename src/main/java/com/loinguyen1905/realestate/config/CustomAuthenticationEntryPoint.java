@@ -1,18 +1,12 @@
 package com.loinguyen1905.realestate.config;
 
 import java.io.IOException;
-import java.io.OutputStream;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loinguyen1905.realestate.model.response.RestResponse;
 
@@ -29,20 +23,22 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     private ObjectMapper mapper;
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException authException) throws IOException, ServletException {
+    public void commence(
+        HttpServletRequest request, HttpServletResponse response, AuthenticationException authException
+    ) throws IOException, ServletException {
                 
-                delegate.commence(request, response, authException);
+        delegate.commence(request, response, authException);
 
-                response.setContentType("application/json;charset=UTF-8");
-        
-                RestResponse<Object> res = RestResponse
-                    .builder()
-                    .statusCode(HttpStatus.UNAUTHORIZED.value())
-                    .message("Authentication failed please check your token :3")
-                    .error(authException.getCause().getMessage())
-                    .build();
+        response.setContentType("application/json;charset=UTF-8");
 
-                mapper.writeValue(response.getWriter(), res);
+        RestResponse<Object> res = RestResponse
+            .builder()
+            .statusCode(HttpStatus.UNAUTHORIZED.value())
+            .message("Authentication failed please check your token :3")
+            .error(authException.getCause().getMessage())
+            .build();
+
+        mapper.writeValue(response.getWriter(), res);
     }
+
 }

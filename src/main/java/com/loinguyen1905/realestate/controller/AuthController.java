@@ -1,6 +1,8 @@
 package com.loinguyen1905.realestate.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +17,7 @@ import com.loinguyen1905.realestate.model.request.LoginRequest;
 import com.loinguyen1905.realestate.model.request.RegisterRequest;
 import com.loinguyen1905.realestate.model.response.AuthenResponse;
 import com.loinguyen1905.realestate.service.ICustomerService;
+import com.loinguyen1905.realestate.service.impl.AuthService;
 import com.loinguyen1905.realestate.util.SecurityUtil;
 
 import jakarta.validation.Valid;
@@ -24,13 +27,7 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
-    
-    @Autowired
-    private SecurityUtil securityUtil;
-
-    @Autowired
-    private ICustomerService customerService;
+    private AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenResponse> login(
@@ -38,24 +35,16 @@ public class AuthController {
         @RequestBody 
         LoginRequest loginRequest
     ) {
-        UsernamePasswordAuthenticationToken authenticationToken
-        = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        String access_token = securityUtil.createToken(authentication);
-        AuthenResponse authenResponse = AuthenResponse.builder().
-            email(loginRequest.getUsername()).
-            accessToken(access_token).
-            build();
-        return ResponseEntity.ok().body(authenResponse); 
+        return ResponseEntity.ok().body(authService.login(loginRequest));
     }
 
     @PostMapping("/register")
-    public CustomerEntity postMethodName(
+    public ResponseEntity<AuthenResponse> register(
         @Valid
         @RequestBody
         RegisterRequest registerRequest
     ) { 
-        CustomerEntity customerEntity = customerService.createCustomer(registerRequest);
-        return customerEntity;
+        AuthenResponse authenResponse = authService.register(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(authenResponse);
     }
 }

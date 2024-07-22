@@ -14,7 +14,7 @@ import com.loinguyen1905.realestate.entity.CustomerEntity;
 import com.loinguyen1905.realestate.model.dto.MyUserDetail;
 import com.loinguyen1905.realestate.service.ICustomerService;
 
-@Component("userDetailsService")  
+@Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
@@ -31,11 +31,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        return MyUserDetail.builder().
-            username(customer.getEmail()).
-            password(customer.getPassword()).
-            authorities(authorities).
-            build();
+        return MyUserDetail.builder()
+            .username(customer.getEmail())
+            .password(customer.getPassword())
+            .authorities(authorities)
+            .build();
     }
     
 }

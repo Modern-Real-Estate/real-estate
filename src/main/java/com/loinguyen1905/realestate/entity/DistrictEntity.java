@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "district")
-public class DistrictEntity extends BaseEntity { 
+public class DistrictEntity extends BaseEntityAudit { 
     @Column(name = "name")
     private String name;
 
@@ -21,6 +21,11 @@ public class DistrictEntity extends BaseEntity {
     private List<BuildingEntity> buildingEntities = new ArrayList<BuildingEntity>();
 
     @ManyToOne
-    @JoinColumn(name = "cityid")
+    @JoinColumn(name = "city_id")
     private CityEntity city;
+
+    @PrePersist
+    public void prePersist() {
+        super.prePersist();
+    }
 }

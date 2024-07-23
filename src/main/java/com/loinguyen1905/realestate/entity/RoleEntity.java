@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "role")
-public class RoleEntity extends BaseEntity{
+public class RoleEntity extends BaseEntityAudit {
 
     private static final long serialVersionUID = -6525302831793188081L; 
 
@@ -20,5 +20,10 @@ public class RoleEntity extends BaseEntity{
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        super.prePersist();
     }
 }

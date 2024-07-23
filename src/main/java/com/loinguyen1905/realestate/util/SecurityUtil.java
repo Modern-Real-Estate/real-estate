@@ -53,7 +53,8 @@ public class SecurityUtil {
 
     public Authentication authentication(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken 
-            authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+            authenticationToken = 
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         return authentication;
     }

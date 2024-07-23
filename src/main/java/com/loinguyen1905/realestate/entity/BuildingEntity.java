@@ -1,7 +1,5 @@
 package com.loinguyen1905.realestate.entity;
 
-
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +12,7 @@ import jakarta.persistence.*;
 @Setter
 @Entity
 @Table(name = "building")
-public class BuildingEntity extends BaseEntity { 
+public class BuildingEntity extends BaseEntityAudit {
     @Column(name = "name")
     private String name;
     @Column(name = "street")
@@ -23,9 +21,9 @@ public class BuildingEntity extends BaseEntity {
     private String ward;
     @Column(name = "structure")
     private String structure;
-    @Column(name = "numberofbasement")
+    @Column(name = "number_of_basement")
     private Integer numberOfBasement;
-    @Column(name = "floorarea")
+    @Column(name = "floor_area")
     private Integer floorArea;
     @Column(name = "direction")
     private String direction;
@@ -33,19 +31,19 @@ public class BuildingEntity extends BaseEntity {
     private String level;
     @Column(name = "rentprice")
     private Integer rentPrice;
-    @Column(name = "rentpricedescription")
+    @Column(name = "rentprice_description")
     private String rentPriceDescription;
-    @Column(name = "servicefee")
+    @Column(name = "service_fee")
     private String serviceFee;
-    @Column(name = "carfee")
+    @Column(name = "car_fee")
     private String carFee;
-    @Column(name = "motofee")
+    @Column(name = "moto_fee")
     private String motoFee;
-    @Column(name = "overtimefee")
+    @Column(name = "overtime_fee")
     private String overtimeFee;
-    @Column(name = "waterfee")
+    @Column(name = "water_fee")
     private String waterFee;
-    @Column(name = "electricityfee")
+    @Column(name = "electricity_fee")
     private String electricityFee;
     @Column(name = "deposit")
     private String deposit;
@@ -55,23 +53,30 @@ public class BuildingEntity extends BaseEntity {
     private String rentTime;
     @Column(name = "decorationtime")
     private String decorationTime;
-    @Column(name = "brokeragefee")
+    @Column(name = "brokerage_fee")
     private Integer brokerageFee;
+
     @Column(name = "type")
     private String typeCode;
 
     @Column(name = "avatar")
     private String avatar;
 
-    @Column(name = "managername")
+    @Column(name = "manager_name")
     private String managerName;
-    @Column(name = "managerphone")
+
+    @Column(name = "manager_phone")
     private String managerPhone;
-    
+
     @OneToMany(mappedBy = "building")
     private List<RentAreaEntity> rentAreas = new ArrayList<RentAreaEntity>();
 
     @ManyToOne
     @JoinColumn(name = "districtid")
     private DistrictEntity district;
+
+    @PrePersist
+    public void prePersist() {
+        super.prePersist();
+    }
 }

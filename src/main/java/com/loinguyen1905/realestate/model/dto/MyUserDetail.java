@@ -7,14 +7,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class MyUserDetail extends User {
-
-    private Long id;
-
-    public MyUserDetail(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities , boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, boolean enabled) {
+    private UUID id;
+    public MyUserDetail(
+        UUID id, String username, String password,
+        boolean accountNonExpired, boolean credentialsNonExpired,
+        Collection<? extends GrantedAuthority> authorities, boolean accountNonLocked, boolean enabled
+    ) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
     }

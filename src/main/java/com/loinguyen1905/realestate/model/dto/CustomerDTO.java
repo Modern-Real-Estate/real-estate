@@ -8,15 +8,9 @@ import lombok.Setter;
 @Getter
 @Builder
 public class CustomerDTO extends AbstractDTO<CustomerDTO> {
-    
     private String firstName;
-
     private String lastName;
-
     private Boolean status;
-
     private String email;
-
     private String phone;
-
 }

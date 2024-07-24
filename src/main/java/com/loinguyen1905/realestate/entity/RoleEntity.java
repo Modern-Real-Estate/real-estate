@@ -9,7 +9,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "role")
 public class RoleEntity extends BaseEntityAudit {
-
     private static final long serialVersionUID = -6525302831793188081L; 
 
     @Column(name="name", nullable = false)
@@ -20,10 +19,5 @@ public class RoleEntity extends BaseEntityAudit {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        super.prePersist();
     }
 }

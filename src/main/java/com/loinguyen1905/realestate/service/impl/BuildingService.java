@@ -1,5 +1,7 @@
 package com.loinguyen1905.realestate.service.impl;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,11 +15,14 @@ import com.loinguyen1905.realestate.converter.BuildingConverter;
 import com.loinguyen1905.realestate.converter.BuildingSearchBuilderConverter;
 import com.loinguyen1905.realestate.entity.BuildingEntity;
 import com.loinguyen1905.realestate.entity.DistrictEntity;
+import com.loinguyen1905.realestate.exception.MyException;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
-import com.loinguyen1905.realestate.model.dto.BuildingRequestDTO;
+import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
+import com.loinguyen1905.realestate.model.request.BuildingRequest;
 import com.loinguyen1905.realestate.repository.BuildingRepository;
 import com.loinguyen1905.realestate.repository.DistrictRepository;
 import com.loinguyen1905.realestate.service.IBuildingService;
+import com.loinguyen1905.realestate.util.OverwriteUtil;
 
 @Service
 public class BuildingService implements IBuildingService {
@@ -26,35 +31,26 @@ public class BuildingService implements IBuildingService {
     private BuildingRepository buildingRepository;
 
     @Autowired
-    private BuildingSearchBuilderConverter buildingSearchBuilderConverter;
-
-    @Autowired
     private DistrictRepository districtRepository;
 
     @Autowired
     private BuildingConverter buildingConverter;
 
     @Override
-    public List<BuildingDTO> findAll(Map<String, Object> params, List<String> typeCode) {
-        BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(params, typeCode);
-        List<BuildingEntity> raw = buildingRepository.findAll(buildingSearchBuilder);
-        List<BuildingDTO> res = raw.stream().map(item -> buildingConverter.toBuildingDTO(item)).toList();
-        return res;
+    public List<BuildingDTO> handleGetBuildings(BuildingSearchRequest buildingSearchRequest) {
+        List<BuildingEntity> buildings = buildingRepository.findAll(buildingSearchRequest);
+        return buildings.stream().map(item -> buildingConverter.toBuildingDTO(item)).toList();
     }
 
     @Override
-    public BuildingDTO findBuildingById(UUID id) { 
-        Optional<BuildingEntity> building = buildingRepository.findById(id);
-        try {
-            return buildingConverter.toBuildingDTO(building.get());
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
+    public BuildingDTO handleGetBuildingById(UUID id) { 
+        Optional<BuildingEntity> isExistBuilding = buildingRepository.findById(id);
+        if(isExistBuilding.isPresent()) return buildingConverter.toBuildingDTO(isExistBuilding.get());
         return null;
-    }
+    } 
 
     @Override
-    public Boolean deleteBuildingsByIds(List<UUID> ids) {
+    public Boolean handleDeleteBuildingByIds(List<UUID> ids) {
         try {
             buildingRepository.deleteByIdIn(ids);
             return true;
@@ -65,24 +61,27 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    public BuildingDTO addBuilding(BuildingRequestDTO buildingRequestDTO) {
-        BuildingEntity newBuilding = new BuildingEntity();
-        newBuilding.setName(buildingRequestDTO.getName());
-        newBuilding.setRentPriceDescription(buildingRequestDTO.getRentPriceDescription());
-        newBuilding.setStructure(buildingRequestDTO.getStructure());
-        newBuilding.setWard(buildingRequestDTO.getWard());
-        newBuilding.setStreet(buildingRequestDTO.getStreet());
-        newBuilding.setNumberOfBasement(buildingRequestDTO.getNumberOfBasement());
-        newBuilding.setFloorArea(buildingRequestDTO.getFloorArea());
-        newBuilding.setDirection(buildingRequestDTO.getDirection());
-        try {
-            Optional<DistrictEntity> district = districtRepository.findById(buildingRequestDTO.getDistrictId());
-            newBuilding.setDistrict(district.get());
-        } catch (Exception e) {
-            e.getStackTrace();
-            newBuilding.setDistrict(null);
-        }
+    public BuildingDTO handleAddBuilding(BuildingRequest buildingRequest) {
+        BuildingEntity newBuilding = buildingConverter.toBuildingEntity(buildingRequest);
+        // try {
+        //     Optional<DistrictEntity> district = districtRepository.findById(buildingRequest.getDistrictId());
+        //     newBuilding.setDistrict(district.get());
+        // } catch (Exception e) {
+        //     e.getStackTrace();
+        //     newBuilding.setDistrict(null);
+        // }
         newBuilding = buildingRepository.save(newBuilding);
         return buildingConverter.toBuildingDTO(newBuilding);
     }
+
+    @Override
+    public BuildingDTO handleUpdateBuilding(BuildingRequest buildingRequest) {
+        Optional<BuildingEntity> isExistBuilding = buildingRepository.findById(buildingRequest.getId());
+        if(isExistBuilding.get() instanceof BuildingEntity modifiedBuilding) {
+            modifiedBuilding = OverwriteUtil.overwrireObject(buildingRequest, modifiedBuilding);
+            modifiedBuilding = buildingRepository.save(modifiedBuilding);
+            return buildingConverter.toBuildingDTO(modifiedBuilding);
+        }
+        return null;
+    }   
 }

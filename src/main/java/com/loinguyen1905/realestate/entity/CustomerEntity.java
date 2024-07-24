@@ -8,7 +8,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "customer")
 public class CustomerEntity extends BaseEntityAudit {
-
     private static final long serialVersionUID = -4988455421375043688L;
 
     @Column(name = "frist_name", nullable = false)
@@ -23,14 +22,9 @@ public class CustomerEntity extends BaseEntityAudit {
     @Column(name = "status", nullable = false)
     private Boolean status;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true) 
     private String email;
 
     @Column(name = "phone", nullable = true)
     private String phone;
-    
-    @PrePersist
-    public void prePersist() {
-        this.status = true;
-    }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.loinguyen1905.realestate.model.request.LoginRequest;
 import com.loinguyen1905.realestate.model.request.RegisterRequest;
 import com.loinguyen1905.realestate.model.response.AuthenResponse;
-import com.loinguyen1905.realestate.service.impl.AuthService;
+import com.loinguyen1905.realestate.service.IAuthService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -19,23 +19,15 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     @Autowired
-    private AuthService authService;
+    private IAuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenResponse> login(
-        @Valid
-        @RequestBody 
-        LoginRequest loginRequest
-    ) {
+    public ResponseEntity<AuthenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok().body(authService.login(loginRequest));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenResponse> register(
-        @Valid
-        @RequestBody
-        RegisterRequest registerRequest
-    ) { 
+    public ResponseEntity<AuthenResponse> register(@Valid @RequestBody RegisterRequest registerRequest) { 
         AuthenResponse authenResponse = authService.register(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(authenResponse);
     }

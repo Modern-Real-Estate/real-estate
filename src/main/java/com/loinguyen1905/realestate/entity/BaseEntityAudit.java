@@ -1,15 +1,18 @@
 package com.loinguyen1905.realestate.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.loinguyen1905.realestate.util.SecurityUtil;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -17,8 +20,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntityAudit extends BaseEntity {
-
     @Column(name = "created_by", nullable = true)
     private String createdBy;
 
@@ -26,13 +29,12 @@ public abstract class BaseEntityAudit extends BaseEntity {
     private String updatedBy;
 
     @CreationTimestamp
-    @JsonFormat(pattern = "ss-mm-HH dd-MM-yyyy a", timezone = "GMT+7")
-    @Column(name = "created_at", updatable = false)
-    private Instant createdAt;
+    @Column(name = "created_date", updatable = false)
+    private Instant createdDate;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Instant updatedAt;
+    @Column(name = "updated_date", updatable = true)
+    private Instant updatedDate;
 
     @Override
     public boolean equals(Object o) {
@@ -42,13 +44,31 @@ public abstract class BaseEntityAudit extends BaseEntity {
         BaseEntityAudit that = (BaseEntityAudit) o;
         return createdBy.equals(that.createdBy) &&
                 updatedBy.equals(that.updatedBy) &&
-                createdAt.equals(that.createdAt) &&
-                updatedAt.equals(that.updatedAt);
+                createdDate.equals(that.createdDate) &&
+                updatedDate.equals(that.updatedDate);
     }
 
     @Override
     public int hashCode() {
-        return 
-            Objects.hash(super.hashCode(), createdBy, updatedBy, createdAt, updatedAt);
+        return
+            Objects.hash(super.hashCode(), createdBy, updatedBy, createdDate, updatedDate);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.setCreatedBy(
+          SecurityUtil.getCurrentUserLogin().isPresent() == true 
+            ? SecurityUtil.getCurrentUserLogin().get()
+            : null
+        );
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.setUpdatedBy(
+          SecurityUtil.getCurrentUserLogin().isPresent() == true 
+            ? SecurityUtil.getCurrentUserLogin().get()
+            : null
+        );
     }
 }

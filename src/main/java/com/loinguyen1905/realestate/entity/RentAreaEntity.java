@@ -6,18 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "rentarea")
+@Table(name = "rent_area")
 public class RentAreaEntity extends BaseEntityAudit {
-
     @Column(name = "value", nullable = false)
-    private Integer value;
+    private String value;
 
     @ManyToOne
     @JoinColumn(name = "building_id")
     BuildingEntity building;
-    
-    @PrePersist
-    public void prePersist() {
-        super.prePersist();
-    }
 }

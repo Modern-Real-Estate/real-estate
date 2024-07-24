@@ -66,6 +66,16 @@ public class GlobalExceptionHandler {
             .error("Data must be unique but maybe used").build();
         return ResponseEntity.badRequest().body(restResponse);
     }
+
+    @ExceptionHandler(value = MyException.class)
+    public ResponseEntity<RestResponse<Object>> handldeException(MyException ex) {
+        RestResponse<Object> restResponse = RestResponse
+            .builder()
+            .statusCode(ex.getStatusCode())
+            .message(ex.getMessage())
+            .error(ex.getError().toString()).build();
+        return ResponseEntity.status(ex.getStatusCode()).body(restResponse);
+    }
     
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<RestResponse<Object>> handldeException(Exception ex) {

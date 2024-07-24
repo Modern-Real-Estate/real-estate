@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.loinguyen1905.realestate.entity.BuildingEntity;
 import com.loinguyen1905.realestate.repository.custom.BuildingRepositoryCustom;
 
-import jakarta.transaction.Transactional;
-
 @Repository
 public interface BuildingRepository extends JpaRepository<BuildingEntity, UUID>, BuildingRepositoryCustom {
-    @Transactional
     void deleteByIdIn(List<UUID> ids);
 }

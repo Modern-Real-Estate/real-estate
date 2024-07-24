@@ -11,18 +11,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "city")
-public class CityEntity extends BaseEntityAudit { 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "code")
-    private String code;
-
+public class CityEntity extends LocationEntity {
     @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
     private List<DistrictEntity> buildingEntities = new ArrayList<DistrictEntity>();
-
-    @PrePersist
-    public void prePersist() {
-        super.prePersist();
-    }
 }

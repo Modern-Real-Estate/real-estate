@@ -3,11 +3,11 @@ package com.loinguyen1905.realestate.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
+@Getter
+@Setter
 @Builder
-@Data
 public class BuildingSearchBuilder {
     private String name;
     private Integer floorArea;

@@ -2,11 +2,15 @@
 
   ## Nguồn cảm hứng để Win Nguyen triển khai dự án này !
     Từ xa xưa trong quan niệm của người Việt ta thì việc “an cư lạc nghiệp” là rất quan trọng. 
-    Mua đất là đầu tư an toàn và chắc chắn nhất. Đất chẳng thể mất đi và cũng chẳng thể đẻ thêm nên nếu không tăng giá thì cũng giảm rủi ro về sau. Điều quan trọng, khi sở hữu nhà đất, bạn không lo lắng về việc mất tiền thuê nhà hàng tháng. 
-    Nhờ đó số tiền kiếm được sẽ dễ tích lũy để sử dụng cho nhu cầu sinh hoạt và kinh doanh hàng tháng. Ở những vùng nông thôn đang trong quá trình thay đổi cơ sở hạ tầng làm giá đất tăng nhanh chóng. Điều này làm cho các hộ gia đình trong khu quy hoạch nhanh chóng trở nên giàu có. 
-    Nhiều người có thể mua nhà, mua xe ngay sau khi bán đất. Không thiếu các câu chuyên trên báo chí người dân phất lên nhờ bán đất. Điều này khiến không chỉ người dân địa phương mà còn thu hút rất nhiều nhà đầu tư "săn đất". 
+    Mua đất là đầu tư an toàn và chắc chắn nhất. Đất chẳng thể mất đi và cũng chẳng thể đẻ thêm nên nếu không tăng giá thì cũng giảm rủi ro về sau. 
+    Điều quan trọng, khi sở hữu nhà đất, bạn không lo lắng về việc mất tiền thuê nhà hàng tháng. 
+    Nhờ đó số tiền kiếm được sẽ dễ tích lũy để sử dụng cho nhu cầu sinh hoạt và kinh doanh hàng tháng. 
+    Ở những vùng nông thôn đang trong quá trình thay đổi cơ sở hạ tầng làm giá đất tăng nhanh chóng. Điều này làm cho các hộ gia đình trong khu quy hoạch nhanh chóng trở nên giàu có. 
+    Nhiều người có thể mua nhà, mua xe ngay sau khi bán đất. Không thiếu các câu chuyên trên báo chí người dân phất lên nhờ bán đất. 
+    Điều này khiến không chỉ người dân địa phương mà còn thu hút rất nhiều nhà đầu tư "săn đất". 
     Ai cũng mong một ngày giá đất tăng mạnh để đổi đời. Hơn nữa cơn sốt bất động sản đang là xu thế của những quốc gia đang phát triển như Việt Nam...
-    ###  Và để nắm bắt điều đó Win Nguyen quyết định triển khai dự án này tạo ra một hệ thống quản lý mua bán cho thuê bất động sản với tên gọi Win Nguyen Company với SLOGAN: KHÁCH HÀNG LÀ NHẤT CHÚNG TÔI PHỤC VỤ BẰNG CẢ CON TIM :3
+    ###  Và để nắm bắt điều đó Win Nguyen quyết định triển khai dự án này tạo ra một hệ thống quản lý mua bán cho thuê bất động sản với tên gọi Win Nguyen Company với 
+    SLOGAN: KHÁCH HÀNG LÀ NHẤT CHÚNG TÔI PHỤC VỤ BẰNG CẢ CON TIM :3
     Quý Khách hàng đến với Win Nguyen Company không cần lo lắng về thủ tục hay chính sách ngộ đãi chỉ cần mang tâm thế mua/thuê nhà đất chúng tôi sẽ lo mọi thủ tục từ A -> Z và chính sách chăm sóc ưu tiên khách hàng nhất ! 
     ❤From: :3 Win Nguyen Company
 

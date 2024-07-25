@@ -12,8 +12,7 @@ In rural areas undergoing infrastructure changes, land prices are rising rapidly
 ### To seize this opportunity, Win Nguyen decided to launch this project to create a real estate buying, selling, and rental management system named WinNguyen Company with the SLOGAN: CUSTOMERS FIRST, WE SERVE WITH OUR HEART :3
 Customers coming to Win Nguyen Company need not worry about procedures or special policies. They just need to have the intention to buy/rent property, and we will handle all the procedures from A to Z with the best customer care policies ! ♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤From: :3 Win Nguyen Company
 
-## Logic Nghiệp vụ của dự án này
-## Tiếng Việt
+## Logic Nghiệp vụ của dự án này / Business Logic of this project
 1/ Relationship of Customer <--> User.<br/>
 Customer đi đến công ty môi giới bất động sản Win Nguyen Company để được tư vấn mua/thuê Building.
 Sau đó, User(với role ADMIN/MANAGER) sẽ điều phối vài nhân viên User(với role STAFF) để chăm sóc (AssignmentCustomer) khách hàng đấy.

@@ -14,6 +14,26 @@ In rural areas undergoing infrastructure changes, land prices are rising rapidly
 Customers coming to Win Nguyen Company need not worry about procedures or special policies. They just need to have the intention to buy/rent property, and we will handle all the procedures from A to Z with the best customer care policies ! ♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤♡ ♥💕❤From: :3 Win Nguyen Company
 
 ## Logic Nghiệp vụ của dự án này
+## Tiếng Việt
+1/ Relationship of Customer <--> User.
+Customer đi đến công ty môi giới bất động sản Win Nguyen Company để được tư vấn mua/thuê Building.
+Sau đó, User(với role ADMIN/MANAGER) sẽ điều phối vài nhân viên User(với role STAFF) để chăm sóc (AssignmentCustomer) khách hàng đấy.
+Trong quá trình chăm sóc thì giữa nhân viên và khác hàng sẽ có những giao dịch như (Transaction Type: Đặt cọc, buổi tư vấn, chốt đơn) (Khi khác hàng chốt đơn sẽ khởi tạo hợp đồng(Contract) ), lý do lưu thông tin chi tiết như vậy là để tracking history trả lương xứng đáng cho từng nhân viên khi khách hàng chốt đơn, đối với Transaction Type chốt đơn và đặc cọc sẽ được tra cứu để tổng kết nhân viên xuất sắc trong tháng.
+2/ Relationship of Customer <--> Building.
+Khi những khác hàng đã được tư vấn và chốt đơn Building thành công sẽ khởi tạo hợp đồng (Contract) với Building đó.
+Hợp đồng sẽ có nhiều loại như "Mua"/"Thuê", trạng thái hợp đồng "Hoàn tất thanh toán", "Trả góp" và sẽ có một số điều khoảng (Constract Terms) như quy định sử dụng - chính sách đổi trả - bảo hiểm toà nhà - hủy hợp đồng do bên môi giới hoặc khách hàng).
+Những khác hàng đã "chốt đơn"/"khởi tạo hợp đồng" với toàn nhà đó thì có quyền đánh giá(Review) BUilding đó.
+3/ Relationship of User <--> Building.
+ADMIN/MANAGER điều phối vài nhân viên làm việc với một Building trong đó có một người sẽ là Manager của toàn nhà, và mọi dịch vụ của khác hàng với ngôi nhà này sẽ do nhóm nhân viên này phụ trách.
+4/ Những thuộc tính là khóa ngoại xoay quanh Building.
+RentArea một toà nhà sẽ có nhiều diện tích thuê khu vực thuê (hoặc mua).
+District một toàn nhà sẽ chỉ nằm trên 1 huyện (trường hợp tòa nhà nằm trên đất 2 huyện thì tính phần đất ở huyện nào nhiều hơn).
+BuildingType nhà có tần trệt, có nội thất, nhà nguyên căn, nhà thương mại, nhà công vụ hoặc nhà phân cấp...
+5/ Coming soon...
+6/ Tính năng bên lề...
+Realtime communication: 
+Upload file/ảnh:
+Payment:
 Coming soon...
 
 ## Mô hình sơ đồ của cả dự án 

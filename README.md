@@ -19,6 +19,7 @@ Customers coming to Win Nguyen Company need not worry about procedures or specia
 Customer đi đến công ty môi giới bất động sản Win Nguyen Company để được tư vấn mua/thuê Building.
 Sau đó, User(với role ADMIN/MANAGER) sẽ điều phối vài nhân viên User(với role STAFF) để chăm sóc (AssignmentCustomer) khách hàng đấy.
 Trong quá trình chăm sóc thì giữa nhân viên và khác hàng sẽ có những giao dịch như (Transaction Type: Đặt cọc, buổi tư vấn, chốt đơn) (Khi khác hàng chốt đơn sẽ khởi tạo hợp đồng(Contract) ), lý do lưu thông tin chi tiết như vậy là để tracking history trả lương xứng đáng cho từng nhân viên khi khách hàng chốt đơn, đối với Transaction Type chốt đơn và đặc cọc sẽ được tra cứu để tổng kết nhân viên xuất sắc trong tháng.
+<br/>
 2/ Relationship of Customer <--> Building.
 Khi những khác hàng đã được tư vấn và chốt đơn Building thành công sẽ khởi tạo hợp đồng (Contract) với Building đó.
 Hợp đồng sẽ có nhiều loại như "Mua"/"Thuê", trạng thái hợp đồng "Hoàn tất thanh toán", "Trả góp" và sẽ có một số điều khoảng (Constract Terms) như quy định sử dụng - chính sách đổi trả - bảo hiểm toà nhà - hủy hợp đồng do bên môi giới hoặc khách hàng).

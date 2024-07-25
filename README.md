@@ -23,15 +23,18 @@ Trong quá trình chăm sóc thì giữa nhân viên và khác hàng sẽ có nh
 2/ Relationship of Customer <--> Building.
 Khi những khác hàng đã được tư vấn và chốt đơn Building thành công sẽ khởi tạo hợp đồng (Contract) với Building đó.
 Hợp đồng sẽ có nhiều loại như "Mua"/"Thuê", trạng thái hợp đồng "Hoàn tất thanh toán", "Trả góp" và sẽ có một số điều khoảng (Constract Terms) như quy định sử dụng - chính sách đổi trả - bảo hiểm toà nhà - hủy hợp đồng do bên môi giới hoặc khách hàng).
-Những khác hàng đã "chốt đơn"/"khởi tạo hợp đồng" với toàn nhà đó thì có quyền đánh giá(Review) BUilding đó.
+Những khác hàng đã "chốt đơn"/"khởi tạo hợp đồng" với toàn nhà đó thì có quyền đánh giá(Review) BUilding đó.<br/>
 3/ Relationship of User <--> Building.
 ADMIN/MANAGER điều phối vài nhân viên làm việc với một Building trong đó có một người sẽ là Manager của toàn nhà, và mọi dịch vụ của khác hàng với ngôi nhà này sẽ do nhóm nhân viên này phụ trách.
+<br/>
 4/ Những thuộc tính là khóa ngoại xoay quanh Building.
 RentArea một toà nhà sẽ có nhiều diện tích thuê khu vực thuê (hoặc mua).
 District một toàn nhà sẽ chỉ nằm trên 1 huyện (trường hợp tòa nhà nằm trên đất 2 huyện thì tính phần đất ở huyện nào nhiều hơn).
 BuildingType nhà có tần trệt, có nội thất, nhà nguyên căn, nhà thương mại, nhà công vụ hoặc nhà phân cấp...
-5/ Coming soon...
-6/ Tính năng bên lề...
+5/ Coming soon...<br/>
+
+6/ Tính năng bên lề...<br/>
+
 Realtime communication: 
 Upload file/ảnh:
 Payment:

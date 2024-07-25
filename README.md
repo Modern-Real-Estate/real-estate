@@ -19,7 +19,8 @@ Below is a screenshot of the project restful api endpoints and the HTTP Method s
 ### UML Diagram
 Below is the UML design of the system including relationships between the difference objects that make up the system
 ### Beta
-![Untitled (1)](https://github.com/winnguyen1905/real-estate/assets/140900453/b423df5b-3d58-413d-8992-9ce1cf1d680e)
+
+![Untitled (1)](https: //github.com/winnguyen1905/real-estate/assets/140900453/b423df5b-3d58-413d-8992-9ce1cf1d680e)
 
 ### Built With
 Used Java spring boot , MySQL and Jason Web Token to build the rest api, including postman for testing.

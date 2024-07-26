@@ -12,6 +12,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "city")
 public class CityEntity extends LocationEntity {
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private List<DistrictEntity> buildingEntities = new ArrayList<DistrictEntity>();
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<DistrictEntity> districts;
 }

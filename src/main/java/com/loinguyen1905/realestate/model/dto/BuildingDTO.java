@@ -1,5 +1,7 @@
 package com.loinguyen1905.realestate.model.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter; 
 
@@ -14,7 +16,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String floorArea;
     private String direction;
     private String level;
-    private String rentArea;
+    private List<RentAreaDTO> rentArea;
     private String rentPrice;
     // private String serviceFee;
     // private String carFee;

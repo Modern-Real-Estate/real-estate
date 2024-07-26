@@ -1,39 +1,31 @@
 package com.loinguyen1905.realestate.service.impl;
 
-import java.util.ArrayList; 
-import java.util.List;
+import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.loinguyen1905.realestate.entity.CustomerEntity;
-import com.loinguyen1905.realestate.model.dto.MyUserDetail;
-import com.loinguyen1905.realestate.service.ICustomerService;
+import com.loinguyen1905.realestate.entity.UserEntity;
+import com.loinguyen1905.realestate.model.dto.MyUserDetails;
+import com.loinguyen1905.realestate.repository.UserRepository;
 
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private ICustomerService customerService;
+    private UserRepository userRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CustomerEntity customer = customerService.handlegetUserByUsername(username);
-
-        if(customer == null) {
-            throw new UsernameNotFoundException("Username not found");
-        }
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        return MyUserDetail.builder()
-            .username(customer.getEmail())
-            .password(customer.getPassword())
-            .authorities(authorities)
-            .build();
-    }
+        Optional<UserEntity> isExistUserWithUsername = userRepository.findByEmail(username);
+        if(isExistUserWithUsername.isPresent() && isExistUserWithUsername.get() instanceof UserEntity user) 
+            return modelMapper.map(user, MyUserDetails.class);
+        else throw new UsernameNotFoundException("User not found");
+    } 
 }

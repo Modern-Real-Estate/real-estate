@@ -7,11 +7,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "rent_area")
-public class RentAreaEntity extends BaseEntityAudit {
+public class RentAreaEntity extends BaseEntityAudit {    
     @Column(name = "value", nullable = false)
     private String value;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "building_id")
     BuildingEntity building;
 }

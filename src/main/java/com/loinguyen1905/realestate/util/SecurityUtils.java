@@ -27,7 +27,7 @@ import com.loinguyen1905.realestate.model.request.LoginRequest;
 
 @Component
 @PropertySource("classpath:application-dev.properties")
-public class SecurityUtil {
+public class SecurityUtils {
 
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
@@ -56,7 +56,7 @@ public class SecurityUtil {
         } else if (authentication.getPrincipal() instanceof UserDetails springSecurityUser) {
             return springSecurityUser.getUsername();
         } else if (authentication.getPrincipal() instanceof Jwt jwt) {
-            return jwt.getSubject();
+            return jwt.getTokenValue();
         } else if (authentication.getPrincipal() instanceof String s) {
             return s;
         }

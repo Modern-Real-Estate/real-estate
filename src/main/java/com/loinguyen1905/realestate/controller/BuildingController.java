@@ -45,13 +45,13 @@ public class BuildingController {
     }
 
     @PostMapping("/")
-    public BuildingDTO createBuilding(@RequestBody BuildingRequest buildingRequest) {
-        return buildingService.handleAddBuilding(buildingRequest);
+    public BuildingDTO addBuilding(@RequestBody BuildingRequest buildingRequest) {
+        return buildingService.handleAddOrUpdateBuilding(buildingRequest);
     }
     
     @PutMapping("/")
     public ResponseEntity<BuildingDTO> updateBuilding(@Valid @RequestBody BuildingRequest buildingRequest) {
-        return ResponseEntity.ok().body(buildingService.handleUpdateBuilding(buildingRequest));
+        return ResponseEntity.ok().body(buildingService.handleAddOrUpdateBuilding(buildingRequest));
     }
 
     @DeleteMapping("/{ids}")

@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtUtil {
+public class JwtUtils {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
     @Autowired
@@ -26,14 +26,12 @@ public class JwtUtil {
     public String createToken(Authentication authentication) {
         Instant now = Instant.now();
         Instant validity  = now.plus(Long.parseLong(jwtExpiration), ChronoUnit.SECONDS);
-
         JwtClaimsSet claims = JwtClaimsSet.builder()
             .issuedAt(now)
             .expiresAt(validity)
             .subject(authentication.getName())
             .claim("user", authentication)
             .build();
-
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
     }

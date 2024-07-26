@@ -1,8 +1,10 @@
 package com.loinguyen1905.realestate.model.request;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.loinguyen1905.realestate.model.dto.AbstractDTO;
+import com.loinguyen1905.realestate.model.dto.RentAreaDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +21,6 @@ public class BuildingRequest extends AbstractDTO<BuildingRequest> {
     private String floorArea;
     private String direction;
     private String level;
-    // private String rentArea;
     private String rentPrice;
     private String managerName;
     private String managerPhone;
@@ -38,6 +39,7 @@ public class BuildingRequest extends AbstractDTO<BuildingRequest> {
     // private String brokerageFee;
     // private String note;
 
+    private List<String> rentArea;
     // private List<String> typeCode;
-    // private UUID districtId;
+    private UUID districtId;
 }

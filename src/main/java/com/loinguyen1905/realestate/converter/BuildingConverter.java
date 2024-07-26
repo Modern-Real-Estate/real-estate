@@ -1,5 +1,6 @@
 package com.loinguyen1905.realestate.converter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import com.loinguyen1905.realestate.entity.BuildingEntity;
 import com.loinguyen1905.realestate.entity.RentAreaEntity;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.request.BuildingRequest;
+import com.loinguyen1905.realestate.util.OverwriteUtils;
 
 @Component
 public class BuildingConverter {
@@ -18,25 +20,32 @@ public class BuildingConverter {
     @Autowired
     private ModelMapper modelMapper;
 
-    public BuildingDTO toBuildingDTO(BuildingEntity buildingEntity){
+    public BuildingDTO toBuildingDTO(BuildingEntity buildingEntity) {
         BuildingDTO buildingDTO = modelMapper.map(buildingEntity, BuildingDTO.class);
-        // buildingDTO.setAddress(
-        //     buildingEntity.getWard() + ", " +
-        //     buildingEntity.getStreet() + " street, " +
-        //     (buildingEntity.getDistrict() != null ? (buildingEntity.getDistrict().getName() + ", ") : "") +
-        //     (buildingEntity.getDistrict() != null && buildingEntity.getDistrict().getCity() != null ? (buildingEntity.getDistrict().getCity().getName() + " city") : "")
-        // );
-        // String rentAreaString = rentAreas.stream().map(item -> item.getValue().toString()).collect(Collectors.joining(", "));
-        // buildingDTO.setRentArea(rentAreaString);
+        buildingDTO.setAddress(
+            buildingEntity.getWard() + ", " +
+            buildingEntity.getStreet() + " street, " +
+            (buildingEntity.getDistrict() != null ? (buildingEntity.getDistrict().getName() + " district, ") : "Unknown district, ") +
+            (buildingEntity.getDistrict() != null && buildingEntity.getDistrict().getCity() != null ? (buildingEntity.getDistrict().getCity().getName() + " city") : "Unknown city")
+        );
         return buildingDTO;
     }
 
-    public <T> BuildingEntity toBuildingEntity(T object) {
-        if(object instanceof BuildingRequest buildingRequest) {
-            return modelMapper.map(buildingRequest, BuildingEntity.class);
-        } else if(object instanceof BuildingDTO buildingDTO) {
-            return modelMapper.map(buildingDTO, BuildingEntity.class);
+    public BuildingEntity toBuildingEntity(BuildingRequest buildingRequest) {
+        BuildingEntity buildingEntity = modelMapper.map(buildingRequest, BuildingEntity.class);
+        if(buildingRequest.getRentArea() != null) {
+            List<RentAreaEntity> rentAreas = 
+            buildingRequest.getRentArea().stream().map(item -> {
+                    RentAreaEntity rentAreaEntity = new RentAreaEntity();
+                    rentAreaEntity.setValue(item);
+                    return rentAreaEntity;}).toList();
+            buildingEntity.setRentArea(rentAreas);
         }
-        return null;
+        return buildingEntity;
+    }
+
+    public BuildingEntity updateBuildingEntity(BuildingRequest newBuildingData, BuildingEntity modefiedBuilding) {
+        modefiedBuilding = OverwriteUtils.overwrireObject(newBuildingData, modefiedBuilding);
+        return modefiedBuilding;
     }
 }

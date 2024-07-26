@@ -86,10 +86,12 @@ public class BuildingEntity extends BaseEntityAudit {
     @Column(name = "manager_phone")
     private String managerPhone;
 
-    @OneToMany(mappedBy = "building")
-    private List<RentAreaEntity> rentAreas = new ArrayList<RentAreaEntity>();
+    @OneToMany(mappedBy = "building",
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, orphanRemoval = true
+    )
+    private List<RentAreaEntity> rentArea;
 
     @ManyToOne
-    @JoinColumn(name = "districtid")
+    @JoinColumn(name = "district_id")
     private DistrictEntity district;
 }

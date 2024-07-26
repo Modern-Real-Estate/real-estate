@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +12,15 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.loinguyen1905.realestate.util.SecurityUtil;
+import com.loinguyen1905.realestate.util.SecurityUtils;
 
+import java.security.Security;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -54,21 +59,26 @@ public abstract class BaseEntityAudit extends BaseEntity {
             Objects.hash(super.hashCode(), createdBy, updatedBy, createdDate, updatedDate);
     }
 
+    public String findSystemUser() {
+        Optional<String> isExitIdentify = SecurityUtils.getCurrentUserLogin();
+        if(isExitIdentify.isPresent() && isExitIdentify.get() instanceof String identify) 
+            return identify;
+        else return "Unknown";
+    }
+
     @PrePersist
     public void prePersist() {
-        this.setCreatedBy(
-          SecurityUtil.getCurrentUserLogin().isPresent() == true 
-            ? SecurityUtil.getCurrentUserLogin().get()
-            : null
-        );
+        Authentication a = SecurityContextHolder.getContext().getAuthentication();
+        this.setCreatedBy(findSystemUser());
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.setUpdatedBy(
-          SecurityUtil.getCurrentUserLogin().isPresent() == true 
-            ? SecurityUtil.getCurrentUserLogin().get()
-            : null
-        );
+        this.setUpdatedBy(findSystemUser());
+    }
+
+    @PreRemove
+    public void preRemove() {
+        // this.setUpdatedBy(findSystemUser());
     }
 }

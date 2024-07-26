@@ -1,4 +1,6 @@
 package com.loinguyen1905.realestate.entity;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,24 +9,14 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "customer")
-public class CustomerEntity extends BaseEntityAudit {
-    private static final long serialVersionUID = -4988455421375043688L;
-
-    @Column(name = "frist_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "status", nullable = false)
-    private Boolean status;
-
-    @Column(name = "email", unique = true) 
-    private String email;
-
-    @Column(name = "phone", nullable = true)
-    private String phone;
+@DiscriminatorValue("customer")
+@PrimaryKeyJoinColumn(name = "id")
+public class CustomerEntity extends UserEntity {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinTable(
+        name = "assignment_customer",
+        joinColumns = @JoinColumn(name = "customer_id"),
+        inverseJoinColumns = @JoinColumn(name = "staff_id")
+    )
+    private List<StaffEntity> staffs;
 }

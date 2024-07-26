@@ -14,20 +14,19 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
-import com.loinguyen1905.realestate.util.SecurityUtil;
+import com.loinguyen1905.realestate.util.SecurityUtils;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
 
 @Configuration
 @PropertySource("classpath:application-dev.properties")
 public class JwtConfiguration {
-
     @Value("${winnguyen1905.jwt.base64-secret}")
     private String jwtKey;
 
     public SecretKey getSecretKey() {
         byte[] keyBytes = Base64.from(jwtKey).decode();
-        return new SecretKeySpec(keyBytes, 0, keyBytes.length, SecurityUtil.JWT_ALGORITHM.getName());
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length, SecurityUtils.JWT_ALGORITHM.getName());
     }
 
     @Bean
@@ -39,7 +38,7 @@ public class JwtConfiguration {
     public JwtDecoder jwtDecoder() {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
             .withSecretKey(getSecretKey())
-            .macAlgorithm(SecurityUtil.JWT_ALGORITHM)
+            .macAlgorithm(SecurityUtils.JWT_ALGORITHM)
             .build();
         return token -> {
             try {
@@ -60,5 +59,4 @@ public class JwtConfiguration {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
     }
-
 }

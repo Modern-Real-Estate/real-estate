@@ -6,55 +6,56 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.loinguyen1905.realestate.converter.CustomerConverter;
+import com.loinguyen1905.realestate.converter.UserConverter;
 import com.loinguyen1905.realestate.entity.CustomerEntity;
+import com.loinguyen1905.realestate.entity.UserEntity;
 import com.loinguyen1905.realestate.model.request.LoginRequest;
 import com.loinguyen1905.realestate.model.request.RegisterRequest;
 import com.loinguyen1905.realestate.model.response.AuthenResponse;
-import com.loinguyen1905.realestate.repository.CustomerRepository;
+import com.loinguyen1905.realestate.repository.UserRepository;
 import com.loinguyen1905.realestate.service.IAuthService;
-import com.loinguyen1905.realestate.util.JwtUtil;
-import com.loinguyen1905.realestate.util.SecurityUtil;
+import com.loinguyen1905.realestate.util.JwtUtils;
+import com.loinguyen1905.realestate.util.SecurityUtils;
 
 @Service
 public class AuthService implements IAuthService {
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private CustomerConverter customerConverter;
+    private UserConverter userConverter;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired 
-    private SecurityUtil securityUtil;
+    private SecurityUtils securityUtils;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtils jwtUtils;
 
     @Override
     public AuthenResponse login(LoginRequest loginRequest) {
-        Authentication authenticResults = securityUtil.authentication(loginRequest);
+        Authentication authenticResults = securityUtils.authentication(loginRequest);
         SecurityContextHolder.getContext().setAuthentication(authenticResults);
-
-        String access_token = jwtUtil.createToken(authenticResults);
+        
+        String access_token = jwtUtils.createToken(authenticResults);
 
         return AuthenResponse.builder()
-                .accessToken(access_token)
-                .email(loginRequest.getUsername())
-                .build();
+            .accessToken(access_token)
+            .email(loginRequest.getUsername())
+            .build();
     }
 
     @Override
     public AuthenResponse register(RegisterRequest registerRequest) {
-        CustomerEntity customerEntity = customerConverter.toCustomerEnity(registerRequest);
-        customerEntity.setPassword(passwordEncoder.encode(customerEntity.getPassword()));
-        customerEntity = customerRepository.save(customerEntity);
+        UserEntity user = userConverter.toUserEntity(registerRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user = userRepository.save(user);
 
         return AuthenResponse.builder()
-                .email(registerRequest.getEmail())
-                .build();
+            .email(registerRequest.getEmail())
+            .build();
     }
 
     @Override

@@ -15,15 +15,14 @@ public class AbstractDTO<T> implements Serializable {
     private static final long serialVersionUID = 7213600440729202783L;
     private UUID id;
 
-    @JsonFormat(pattern = "HH-mm-ss dd-MM-yyyy a", timezone = "GMT+7")
+    @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     private Instant createdDate;
-
-    private String createdBy;
-
     @JsonFormat(pattern = "HH-mm-ss dd-MM-yyyy a", timezone = "GMT+7")
     private Instant updatedDate;
-    
+
+    private String createdBy;
     private String updatedBy;
+
     // private int maxPageItems = 3;
     // private int page = 1;
     // private List<T> listResult = new ArrayList<>();

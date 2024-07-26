@@ -18,8 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-  
-    private final AuthenticationEntryPoint delegate = new BearerTokenAuthenticationEntryPoint(); 
+    private final AuthenticationEntryPoint delegate = new BearerTokenAuthenticationEntryPoint();
 
     @Autowired
     private ObjectMapper mapper;
@@ -30,7 +29,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     ) throws IOException, ServletException {
         delegate.commence(request, response, authException);
         response.setContentType("application/json;charset=UTF-8");
-
         RestResponse<Object> res = RestResponse
             .builder()
             .statusCode(HttpStatus.UNAUTHORIZED.value())
@@ -41,8 +39,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                     .orElse(authException.getMessage())
             )
             .build();
-
         mapper.writeValue(response.getWriter(), res);
     }
-
 }

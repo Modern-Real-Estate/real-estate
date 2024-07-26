@@ -1,40 +1,38 @@
 package com.loinguyen1905.realestate.service.impl;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.loinguyen1905.realestate.builder.BuildingSearchBuilder;
 import com.loinguyen1905.realestate.converter.BuildingConverter;
-import com.loinguyen1905.realestate.converter.BuildingSearchBuilderConverter;
 import com.loinguyen1905.realestate.entity.BuildingEntity;
 import com.loinguyen1905.realestate.entity.DistrictEntity;
-import com.loinguyen1905.realestate.exception.MyException;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
+import com.loinguyen1905.realestate.model.dto.DistrictDTO;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
 import com.loinguyen1905.realestate.model.request.BuildingRequest;
 import com.loinguyen1905.realestate.repository.BuildingRepository;
-import com.loinguyen1905.realestate.repository.DistrictRepository;
 import com.loinguyen1905.realestate.service.IBuildingService;
-import com.loinguyen1905.realestate.util.OverwriteUtil;
+import com.loinguyen1905.realestate.service.IDistrictService;
+import com.loinguyen1905.realestate.util.OverwriteUtils;
 
 @Service
 public class BuildingService implements IBuildingService {
-
     @Autowired
     private BuildingRepository buildingRepository;
 
     @Autowired
-    private DistrictRepository districtRepository;
+    private IDistrictService districtService;
 
     @Autowired
     private BuildingConverter buildingConverter;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<BuildingDTO> handleGetBuildings(BuildingSearchRequest buildingSearchRequest) {
@@ -51,37 +49,27 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public Boolean handleDeleteBuildingByIds(List<UUID> ids) {
-        try {
-            buildingRepository.deleteByIdIn(ids);
-            return true;
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        return false;
+        buildingRepository.deleteByIdIn(ids);
+        return true;
     }
-
+    
     @Override
-    public BuildingDTO handleAddBuilding(BuildingRequest buildingRequest) {
-        BuildingEntity newBuilding = buildingConverter.toBuildingEntity(buildingRequest);
-        // try {
-        //     Optional<DistrictEntity> district = districtRepository.findById(buildingRequest.getDistrictId());
-        //     newBuilding.setDistrict(district.get());
-        // } catch (Exception e) {
-        //     e.getStackTrace();
-        //     newBuilding.setDistrict(null);
-        // }
-        newBuilding = buildingRepository.save(newBuilding);
-        return buildingConverter.toBuildingDTO(newBuilding);
-    }
-
-    @Override
-    public BuildingDTO handleUpdateBuilding(BuildingRequest buildingRequest) {
-        Optional<BuildingEntity> isExistBuilding = buildingRepository.findById(buildingRequest.getId());
-        if(isExistBuilding.get() instanceof BuildingEntity modifiedBuilding) {
-            modifiedBuilding = OverwriteUtil.overwrireObject(buildingRequest, modifiedBuilding);
-            modifiedBuilding = buildingRepository.save(modifiedBuilding);
-            return buildingConverter.toBuildingDTO(modifiedBuilding);
+    public BuildingDTO handleAddOrUpdateBuilding(BuildingRequest buildingRequest) {
+        // General Operations
+        BuildingEntity newData = buildingConverter.toBuildingEntity(buildingRequest);
+        if(buildingRequest.getDistrictId() instanceof UUID id) {
+            DistrictDTO districtDTO = districtService.handleFindDistrictById(id);
+            if(districtDTO != null) newData.setDistrict(modelMapper.map(districtDTO, DistrictEntity.class));
         }
-        return null;
-    }   
+        
+        if(buildingRequest.getId() instanceof UUID id) { // Update
+            Optional<BuildingEntity> isExistBuilding = buildingRepository.findById(id);
+            if(isExistBuilding.isPresent() && isExistBuilding.get() instanceof BuildingEntity beModifiedBuilding) {
+                beModifiedBuilding = OverwriteUtils.overwrireObject(newData, beModifiedBuilding);
+                newData = buildingRepository.save(beModifiedBuilding);
+            }
+        } else newData = buildingRepository.save(newData); // Create
+        // Return
+        return buildingConverter.toBuildingDTO(newData);
+    }
 }

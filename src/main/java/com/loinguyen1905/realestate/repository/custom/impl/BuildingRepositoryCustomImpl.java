@@ -54,20 +54,23 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom  {
         sql.append(newTemplete);
     }
 
-    public static void joinTable(StringBuilder sql, BuildingSearchRequest buildingSearchRequest) {
-        
+    public static String joinTable(BuildingSearchRequest buildingSearchRequest) {
+        StringBuilder sql = new StringBuilder("select * from building ");
+        if(buildingSearchRequest.getAreaFrom() != null || buildingSearchRequest.getAreaTo() != null) sql.append(" right join rent_area on rent_area.building_id = building.id");
+        if(buildingSearchRequest.getDistrictId() != null) sql.append(" inner join district on building.id = district.building_id ");
+        // if()
+        return sql.toString();
     }
 
     public static void querySpecial(StringBuilder s, BuildingSearchRequest buildingSearchRequest) {
-
+        // if(buildingSearchRequest.getRentPriceFrom() != null || buildingSearchRequest.getRentPriceTo() != null) sql
     }
 
     @Override
     @Transactional
     public List<BuildingEntity> findAll(BuildingSearchRequest buildingSearchRequest) {
-        StringBuilder sql = new StringBuilder("select b.* from building as b where 1 = 1");
+        StringBuilder sql = new StringBuilder("select p.* from ( " + joinTable(buildingSearchRequest) + " ) as p where 1 = 1 ");
         queryNormal(sql, buildingSearchRequest);
-        joinTable(sql, buildingSearchRequest);
         querySpecial(sql, buildingSearchRequest);
         Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
         return query.getResultList();

@@ -7,10 +7,11 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class CustomerDTO extends AbstractDTO<CustomerDTO> {
+public class UserDTO extends AbstractDTO<UserDTO> {
     private String firstName;
     private String lastName;
     private Boolean status;
     private String email;
     private String phone;
+    private String type;
 }

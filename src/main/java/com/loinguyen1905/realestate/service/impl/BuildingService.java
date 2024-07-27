@@ -48,9 +48,8 @@ public class BuildingService implements IBuildingService {
     } 
 
     @Override
-    public Boolean handleDeleteBuildingByIds(List<UUID> ids) {
+    public void handleDeleteBuildingByIds(List<UUID> ids) {
         buildingRepository.deleteByIdIn(ids);
-        return true;
     }
     
     @Override

@@ -94,4 +94,23 @@ public class BuildingEntity extends BaseEntityAudit {
     @ManyToOne
     @JoinColumn(name = "district_id")
     private DistrictEntity district;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "building_type_detail",
+        joinColumns = @JoinColumn(name = "building_id"),
+        inverseJoinColumns = @JoinColumn(name = "building_type_id")
+    )
+    private List<BuildingTypeEntity> buildingTypes;
+
+    @OneToMany(mappedBy = "building")
+    private List<AssignmentBuildingEntity> assignmentBuilding;
+
+    // @ManyToMany(fetch = FetchType.EAGER)
+    // @JoinTable(
+    //     name = "building_type_detail",
+    //     joinColumns = @JoinColumn(name = "building_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "building_type_id")
+    // )
+    // private List<StaffEntity> staffs;
 }

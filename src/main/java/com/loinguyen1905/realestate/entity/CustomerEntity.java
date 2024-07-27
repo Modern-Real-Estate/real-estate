@@ -12,11 +12,7 @@ import lombok.Setter;
 @DiscriminatorValue("customer")
 @PrimaryKeyJoinColumn(name = "id")
 public class CustomerEntity extends UserEntity {
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinTable(
-        name = "assignment_customer",
-        joinColumns = @JoinColumn(name = "customer_id"),
-        inverseJoinColumns = @JoinColumn(name = "staff_id")
-    )
-    private List<StaffEntity> staffs;
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private StaffEntity staff;
 }

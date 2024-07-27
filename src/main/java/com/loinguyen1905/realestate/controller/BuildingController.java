@@ -1,10 +1,10 @@
 package com.loinguyen1905.realestate.controller;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,8 +13,7 @@ import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.request.BuildingRequest;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
 import com.loinguyen1905.realestate.service.IBuildingService;
-
-import jakarta.validation.Valid;
+import com.loinguyen1905.realestate.util.annotation.APIMessage;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,52 +23,58 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 @RestController
-@RequestMapping("/buildings")
+@RequestMapping("/api/v1/buildings")
 public class BuildingController {
     @Autowired
     private IBuildingService buildingService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<BuildingDTO>> getBuilding(@ModelAttribute(SystemConstant.MODEL) BuildingSearchRequest buildingSearchRequest) {
+    @GetMapping
+    @APIMessage(message = "Fetch buildings with filter and pageable")
+    public ResponseEntity<List<BuildingDTO>> getBuilding(
+        @ModelAttribute(SystemConstant.MODEL) 
+        BuildingSearchRequest buildingSearchRequest
+    ) {
         return ResponseEntity.ok().body(buildingService.handleGetBuildings(buildingSearchRequest));
     }
 
     @GetMapping("/{id}")
+    @APIMessage(message = "Fetch building with id")
     public ResponseEntity<BuildingDTO> getBuildingById(@PathVariable(required = true) UUID id) {
         return ResponseEntity.ok().body(buildingService.handleGetBuildingById(id));
     }
 
-    @PostMapping("/")
-    public BuildingDTO addBuilding(@RequestBody BuildingRequest buildingRequest) {
-        return buildingService.handleAddOrUpdateBuilding(buildingRequest);
+    @PostMapping
+    @APIMessage(message = "Add new building")
+    public ResponseEntity<BuildingDTO> addBuilding(@RequestBody BuildingRequest buildingRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(buildingService.handleAddOrUpdateBuilding(buildingRequest));
     }
     
-    @PutMapping("/")
-    public ResponseEntity<BuildingDTO> updateBuilding(@Valid @RequestBody BuildingRequest buildingRequest) {
+    @PutMapping
+    @APIMessage(message = "Update building with new data")
+    public ResponseEntity<BuildingDTO> updateBuilding(@RequestBody BuildingRequest buildingRequest) {
         return ResponseEntity.ok().body(buildingService.handleAddOrUpdateBuilding(buildingRequest));
     }
 
     @DeleteMapping("/{ids}")
-    public Boolean deleteBuildingById(
+    @APIMessage(message = "Delete buildings with ids[]")
+    public ResponseEntity<Void> deleteBuildingById(
         @PathVariable(required = true) List<UUID> ids
     ) {
-        return buildingService.handleDeleteBuildingByIds(ids);
+        buildingService.handleDeleteBuildingByIds(ids);
+        return ResponseEntity.noContent().build();
     }
 
     // ADMIN END-POINT
 
-    @GetMapping("/admin/building")
-    public String buildingList(@RequestParam String param) {
-        return new String();
-    }
+    // @GetMapping("/admin/building")
+    // public String buildingList(@RequestParam String param) {
+    //     return new String();
+    // }
     
-    @GetMapping("/admin/building-edit")
-    public String buildingEdit(@RequestParam String param) {
-        return new String();    
-    }
+    // @GetMapping("/admin/building-edit")
+    // public String buildingEdit(@RequestParam String param) {
+    //     return new String();    
+    // }
 }

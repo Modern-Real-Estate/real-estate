@@ -2,9 +2,11 @@ package com.loinguyen1905.realestate.entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -17,6 +19,9 @@ import lombok.Setter;
 @DiscriminatorValue("staff")
 @PrimaryKeyJoinColumn(name = "id")
 public class StaffEntity extends UserEntity {
-    @ManyToMany(mappedBy = "staffs")
+    @OneToMany(mappedBy = "staff", fetch = FetchType.EAGER)
     private List<CustomerEntity> customers;
+
+    @OneToMany(mappedBy = "staff", cascade = {CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    private List<AssignmentBuildingEntity> assignmentBuilding;
 }

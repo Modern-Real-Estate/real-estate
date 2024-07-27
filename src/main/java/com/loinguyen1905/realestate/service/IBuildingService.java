@@ -10,7 +10,7 @@ import com.loinguyen1905.realestate.model.request.BuildingRequest;
 public interface IBuildingService {
     List<BuildingDTO> handleGetBuildings(BuildingSearchRequest buildingSearchRequest);
     BuildingDTO handleGetBuildingById(UUID id);
-    Boolean handleDeleteBuildingByIds(List<UUID> ids);
+    void handleDeleteBuildingByIds(List<UUID> ids);
     BuildingDTO handleAddOrUpdateBuilding(BuildingRequest buildingRequestDTO);
     
     // void updateOraddBuilding(BuildingDTO buildingDTO);

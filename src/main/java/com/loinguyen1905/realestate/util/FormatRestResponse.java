@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import com.loinguyen1905.realestate.model.response.RestResponse;
+import com.loinguyen1905.realestate.util.annotation.APIMessage;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -31,13 +32,13 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
         int statusCode = servletResponse.getStatus();
-
         RestResponse<Object> restResponse = RestResponse.builder().statusCode(statusCode).build();
 
         if(statusCode > 399) return body;
         else {
             restResponse.setData((Object) body);
-            restResponse.setMessage("Success");
+            APIMessage message = returnType.getMethodAnnotation(APIMessage.class);
+            restResponse.setMessage(message);
         }
         return restResponse;
     }

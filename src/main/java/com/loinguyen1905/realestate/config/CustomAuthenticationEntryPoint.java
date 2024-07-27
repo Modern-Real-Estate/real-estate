@@ -32,7 +32,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         RestResponse<Object> res = RestResponse
             .builder()
             .statusCode(HttpStatus.UNAUTHORIZED.value())
-            .message("Authentication failed please check your token :3")
+            .message("Authentication failed please check your token")
             .error(
                 Optional.ofNullable(authException.getCause())
                     .map(Throwable::getMessage)

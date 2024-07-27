@@ -34,13 +34,16 @@ public class UserEntity extends BaseEntityAudit {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name = "username", unique = true, nullable = false)
+    private String username;
+
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "status", nullable = false)
     private Boolean status;
 
-    @Column(name = "email", unique = true) 
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "phone", nullable = true)
@@ -49,7 +52,6 @@ public class UserEntity extends BaseEntityAudit {
     @Column(name = "type", insertable = false, updatable = false)
     private String type;
 
-    
     @PrePersist
     public void prePersist() {
         this.status = true;

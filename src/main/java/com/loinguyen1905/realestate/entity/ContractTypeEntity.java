@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "assignment_building")
-public class AssignmentBuilding extends BaseEntityAudit {
+@Table(name = "contract_type")
+public class ContractTypeEntity {
     
 }

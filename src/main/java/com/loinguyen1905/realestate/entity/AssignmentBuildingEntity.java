@@ -1,11 +1,14 @@
 package com.loinguyen1905.realestate.entity;
 import java.util.UUID;
 
+import com.loinguyen1905.realestate.common.AssignmentRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,15 +19,14 @@ import lombok.Setter;
 @Table(name = "assignment_building")
 public class AssignmentBuildingEntity extends BaseEntityAudit {
     @ManyToOne
-    @JoinColumn(name = "building_id")
+    @JoinColumn(name = "building_id", nullable = false)
     private BuildingEntity building;
 
     @ManyToOne
-    @JoinColumn(name = "staff_id")
+    @JoinColumn(name = "staff_id", nullable = false)
     private StaffEntity staff;
 
-    @Column(name = "manager_id")
-    private UUID managerId;
-    
-    // @PrePersist
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private AssignmentRole role;
 }

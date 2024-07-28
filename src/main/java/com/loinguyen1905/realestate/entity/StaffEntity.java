@@ -24,4 +24,10 @@ public class StaffEntity extends UserEntity {
 
     @OneToMany(mappedBy = "staff", cascade = {CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     private List<AssignmentBuildingEntity> assignmentBuilding;
+
+    @OneToMany(mappedBy = "coordinator")
+    private List<ContractEntity> contracts;
+
+    @OneToMany(mappedBy = "staff")
+    private List<TransactionEntity> transactions;
 }

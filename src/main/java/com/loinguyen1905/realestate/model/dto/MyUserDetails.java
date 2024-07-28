@@ -1,7 +1,6 @@
 package com.loinguyen1905.realestate.model.dto;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
@@ -10,12 +9,15 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class MyUserDetails implements UserDetails {
+    private UUID id;
     private String firstName;
     private String lastName;
+    private String username;
     private String password;
     private Boolean status;
     private String email;
@@ -36,7 +38,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
     }
 
     @Override

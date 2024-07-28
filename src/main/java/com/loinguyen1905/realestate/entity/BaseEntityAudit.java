@@ -68,7 +68,6 @@ public abstract class BaseEntityAudit extends BaseEntity {
 
     @PrePersist
     public void prePersist() {
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
         this.setCreatedBy(findSystemUser());
     }
 

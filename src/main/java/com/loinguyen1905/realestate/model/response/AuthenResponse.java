@@ -1,6 +1,11 @@
 package com.loinguyen1905.realestate.model.response;
 
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.loinguyen1905.realestate.model.dto.UserDTO;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,9 +14,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@JsonInclude(value = Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AuthenResponse {
-    private UUID id;
-    private String email;
+    @JsonProperty("user")
+    private UserDTO userDTO;
     private String accessToken;
     private String refreshToken;
 }

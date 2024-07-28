@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.loinguyen1905.realestate.model.dto.AbstractDTO;
-import com.loinguyen1905.realestate.model.dto.RentAreaDTO;
 
 import lombok.Getter;
 import lombok.Setter;

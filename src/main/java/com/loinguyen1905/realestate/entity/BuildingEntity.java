@@ -87,7 +87,8 @@ public class BuildingEntity extends BaseEntityAudit {
     private String managerPhone;
 
     @OneToMany(mappedBy = "building",
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, orphanRemoval = true
+        fetch = FetchType.LAZY, orphanRemoval = true,
+        cascade = { CascadeType.PERSIST, CascadeType.MERGE }
     )
     private List<RentAreaEntity> rentArea;
 
@@ -106,11 +107,6 @@ public class BuildingEntity extends BaseEntityAudit {
     @OneToMany(mappedBy = "building")
     private List<AssignmentBuildingEntity> assignmentBuilding;
 
-    // @ManyToMany(fetch = FetchType.EAGER)
-    // @JoinTable(
-    //     name = "building_type_detail",
-    //     joinColumns = @JoinColumn(name = "building_id"),
-    //     inverseJoinColumns = @JoinColumn(name = "building_type_id")
-    // )
-    // private List<StaffEntity> staffs;
+    @OneToMany(mappedBy = "building", orphanRemoval = false)
+    private List<ContractEntity> contracts;
 }

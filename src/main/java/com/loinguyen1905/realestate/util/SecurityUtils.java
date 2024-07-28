@@ -34,7 +34,7 @@ public class SecurityUtils {
     @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @Value("${winnguyen1905.jwt.token-validity-in-seconds}")
+    @Value("${winnguyen1905.jwt.access_token-validity-in-seconds}")
     private String jwtExpiration;
 
     public Authentication authentication(LoginRequest loginRequest) {

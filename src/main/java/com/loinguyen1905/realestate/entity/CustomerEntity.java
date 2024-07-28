@@ -15,4 +15,10 @@ public class CustomerEntity extends UserEntity {
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private StaffEntity staff;
+
+    @OneToMany(mappedBy = "customer")
+    private List<ContractEntity> contracts;
+
+    @OneToMany(mappedBy = "customer")
+    private List<TransactionEntity> transactions;
 }

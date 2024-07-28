@@ -38,7 +38,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         else {
             restResponse.setData((Object) body);
             APIMessage message = returnType.getMethodAnnotation(APIMessage.class);
-            restResponse.setMessage(message);
+            restResponse.setMessage(message.message());
         }
         return restResponse;
     }

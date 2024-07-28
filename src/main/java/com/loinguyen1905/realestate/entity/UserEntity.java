@@ -52,6 +52,9 @@ public class UserEntity extends BaseEntityAudit {
     @Column(name = "type", insertable = false, updatable = false)
     private String type;
 
+    @Column(columnDefinition = "MEDIUMTEXT", name = "refresh_token", nullable = true)
+    private String refreshToken;
+
     @PrePersist
     public void prePersist() {
         this.status = true;

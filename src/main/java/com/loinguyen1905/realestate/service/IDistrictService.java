@@ -7,6 +7,6 @@ import com.loinguyen1905.realestate.model.dto.DistrictDTO;
 
 public interface IDistrictService {
     DistrictDTO handleAddDistrict(DistrictDTO districtDTO);
-    DistrictDTO handleFindDistrictById(UUID id);
+    DistrictDTO handleGetDistrictById(UUID id);
     List<DistrictDTO> handleGetAllDistrict();
 }

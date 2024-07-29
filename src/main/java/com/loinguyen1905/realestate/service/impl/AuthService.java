@@ -1,15 +1,21 @@
 package com.loinguyen1905.realestate.service.impl;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.loinguyen1905.realestate.converter.AuthenResponseConverter;
 import com.loinguyen1905.realestate.converter.UserConverter;
 import com.loinguyen1905.realestate.entity.UserEntity;
+import com.loinguyen1905.realestate.exception.CustomException;
 import com.loinguyen1905.realestate.model.dto.MyUserDetails;
 import com.loinguyen1905.realestate.model.dto.UserDTO;
 import com.loinguyen1905.realestate.model.request.LoginRequest;
@@ -23,6 +29,7 @@ import com.loinguyen1905.realestate.util.SecurityUtils;
 import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class AuthService implements IAuthService {
     @Autowired
     private UserRepository userRepository;
@@ -36,37 +43,40 @@ public class AuthService implements IAuthService {
     private JwtUtils jwtUtils;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private AuthenResponseConverter authenResponseConverter;
 
     @Override
     public AuthenResponse login(LoginRequest loginRequest) {
         Authentication authenticResults = securityUtils.authentication(loginRequest);
-        ((MyUserDetails) authenticResults.getPrincipal()).setPassword(null);
-        SecurityContextHolder.getContext().setAuthentication(authenticResults);
-        
-        Pair<String, String> tokenPair = jwtUtils.createTokenPair(authenticResults);
-        AuthenResponse authResponse = AuthenResponse.builder()
-            .accessToken(tokenPair.getFirst())
-            .refreshToken(tokenPair.getSecond())
-            .build();
-        if(authenticResults.getPrincipal() instanceof MyUserDetails myUserDetails)
-            authResponse.setUserDTO(modelMapper.map(myUserDetails, UserDTO.class));
-        return authResponse;
+        Pair<String, String> tokenPair = jwtUtils.createTokenPair((MyUserDetails) authenticResults.getPrincipal());
+        handleUpdateUsersRefreshToken(loginRequest.getUsername(), tokenPair.getSecond());
+        return authenResponseConverter
+            .toAuthenResponse(modelMapper.map((MyUserDetails) authenticResults.getPrincipal(), UserEntity.class), tokenPair);
     }
 
     @Override
-    @Transactional
     public AuthenResponse register(RegisterRequest registerRequest) {
         UserEntity user = userConverter.toUserEntity(registerRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
-        return AuthenResponse.builder()
-            .userDTO(modelMapper.map(user, UserDTO.class))
-            .build();
+        return authenResponseConverter.toAuthenResponse(user, null);
     }
 
     @Override
-    public void changeThePassword() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changeThePassword'");
+    public void handleUpdateUsersRefreshToken(String username, String refreshToken) {
+        UserEntity user = userRepository.findUserByUsername(username)
+            .orElseThrow(() -> new CustomException("Not found user with username " + username));
+        user.setRefreshToken(refreshToken);
+        userRepository.save(user);
+    }
+
+    @Override
+    public AuthenResponse handleGetAuthenResponseByUsernameAndRefreshToken(String username, String refreshToken) {
+        UserEntity user = userRepository.findByUsernameAndRefreshToken(username, refreshToken)
+            .orElseThrow(() -> new CustomException("Not found user with refresh token and username " + username));
+        Pair<String, String> tokenPair = jwtUtils.createTokenPair(modelMapper.map(user, MyUserDetails.class));
+        handleUpdateUsersRefreshToken(username, tokenPair.getSecond());
+        return authenResponseConverter.toAuthenResponse(user, tokenPair);
     }
 }

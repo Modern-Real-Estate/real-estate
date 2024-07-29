@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.loinguyen1905.realestate.converter.BuildingConverter;
 import com.loinguyen1905.realestate.entity.BuildingEntity;
 import com.loinguyen1905.realestate.entity.DistrictEntity;
+import com.loinguyen1905.realestate.exception.CustomException;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.dto.DistrictDTO;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
@@ -41,11 +42,11 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    public BuildingDTO handleGetBuildingById(UUID id) { 
-        Optional<BuildingEntity> isExistBuilding = buildingRepository.findById(id);
-        if(isExistBuilding.isPresent()) return buildingConverter.toBuildingDTO(isExistBuilding.get());
-        return null;
-    } 
+    public BuildingDTO handleGetBuildingById(UUID id) {
+        BuildingEntity building = buildingRepository.findById(id)
+            .orElseThrow(() -> new CustomException("Not found buidling with id " + id));
+        return buildingConverter.toBuildingDTO(building);
+    }
 
     @Override
     public void handleDeleteBuildingByIds(List<UUID> ids) {
@@ -54,21 +55,14 @@ public class BuildingService implements IBuildingService {
     
     @Override
     public BuildingDTO handleAddOrUpdateBuilding(BuildingRequest buildingRequest) {
-        // General Operations
-        BuildingEntity newData = buildingConverter.toBuildingEntity(buildingRequest);
-        if(buildingRequest.getDistrictId() instanceof UUID id) {
-            DistrictDTO districtDTO = districtService.handleFindDistrictById(id);
-            if(districtDTO != null) newData.setDistrict(modelMapper.map(districtDTO, DistrictEntity.class));
-        }
-        
+        BuildingEntity newData = buildingConverter.toBuildingEntity(buildingRequest); // To building
+        if(buildingRequest.getDistrictId() instanceof UUID id) // Set district in both case
+            newData.setDistrict(modelMapper.map(districtService.handleGetDistrictById(id), DistrictEntity.class));
         if(buildingRequest.getId() instanceof UUID id) { // Update
-            Optional<BuildingEntity> isExistBuilding = buildingRepository.findById(id);
-            if(isExistBuilding.isPresent() && isExistBuilding.get() instanceof BuildingEntity beModifiedBuilding) {
-                beModifiedBuilding = OverwriteUtils.overwrireObject(newData, beModifiedBuilding);
-                newData = buildingRepository.save(beModifiedBuilding);
-            }
+            BuildingEntity beModifiedBuilding = buildingRepository.findById(id).orElseThrow(null);
+            beModifiedBuilding = OverwriteUtils.overwrireObject(newData, beModifiedBuilding);
+            newData = buildingRepository.save(beModifiedBuilding);
         } else newData = buildingRepository.save(newData); // Create
-        // Return
         return buildingConverter.toBuildingDTO(newData);
     }
 }

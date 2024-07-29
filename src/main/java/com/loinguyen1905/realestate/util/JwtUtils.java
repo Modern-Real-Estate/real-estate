@@ -5,8 +5,8 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.util.Pair;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.loinguyen1905.realestate.model.dto.MyUserDetails;
 
 @Component
+@PropertySource("classpath:application-dev.properties")
 public class JwtUtils {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
     @Autowired
@@ -25,32 +26,28 @@ public class JwtUtils {
     private String jwtAccessTokenExpiration;
     @Value("${winnguyen1905.jwt.refresh_token-validity-in-seconds}")
     private String jwtRefreshTokenExpiration;
-
-    public JwtClaimsSet createJwtClaimsSet(Object authentication, Instant now, Instant validity) {
-        JwtClaimsSet claims = JwtClaimsSet.builder()
+    
+    public JwtClaimsSet createJwtClaimsSet(MyUserDetails myUserDetails, Instant now, Instant validity) {
+        return JwtClaimsSet.builder()
             .issuedAt(now)
             .expiresAt(validity)
-            .subject(
-                authentication instanceof Authentication authenticResult 
-                ? authenticResult.getName()
-                : ((MyUserDetails) authentication).getUsername()
-            )
-            .claim("user", authentication)
+            .subject(myUserDetails.getUsername())
+            .claim("user", myUserDetails)
             .build();
-        return claims;
     }
 
-    public Pair<String, String> createTokenPair(Authentication authentication) {
+    public Pair<String, String> createTokenPair(MyUserDetails myUserDetails) {
+        myUserDetails.setPassword(null);
         Instant
             now = Instant.now(),
             accessTokenValidity = now.plus(Long.parseLong(jwtAccessTokenExpiration), ChronoUnit.SECONDS), 
             refreshTokenValidity = now.plus(Long.parseLong(jwtRefreshTokenExpiration), ChronoUnit.SECONDS);
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
-        String 
+        String
             accessToken = jwtEncoder.encode(JwtEncoderParameters
-                .from(jwsHeader, createJwtClaimsSet(authentication, now, accessTokenValidity))).getTokenValue(),
+                .from(jwsHeader, createJwtClaimsSet(myUserDetails, now, accessTokenValidity))).getTokenValue(),
             refreshToken =jwtEncoder.encode(JwtEncoderParameters
-                .from(jwsHeader, createJwtClaimsSet(authentication.getPrincipal(), now, refreshTokenValidity))).getTokenValue();
+                .from(jwsHeader, createJwtClaimsSet(myUserDetails, now, refreshTokenValidity))).getTokenValue();
         return Pair.of(accessToken, refreshToken);
     }
 }

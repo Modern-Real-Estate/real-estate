@@ -2,6 +2,7 @@ package com.loinguyen1905.realestate.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.loinguyen1905.realestate.common.SystemConstant;
 
 @Configuration
 @EnableWebSecurity
@@ -37,7 +40,7 @@ public class SecurityConfiguration {
             .oauth2ResourceServer(
                 (oauth2) -> oauth2
                     .jwt(Customizer.withDefaults())
-                    .authenticationEntryPoint(customAuthenticationEntryPoint) // Override customize invalid token in response
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
             )
             // .exceptionHandling(
             //     (exceptions) -> exceptions
@@ -45,8 +48,7 @@ public class SecurityConfiguration {
             //         .accessDeniedHandler(new BearerTokenAccessDeniedHandler()) // 403
             // )
             .formLogin(f -> f.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Model working with security to Restful APIs web service the stateless is default
-
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 }

@@ -10,7 +10,6 @@ import com.loinguyen1905.realestate.model.request.RegisterRequest;
 
 @Component
 public class UserConverter {
-
     @Autowired
     public ModelMapper modelMapper;
 

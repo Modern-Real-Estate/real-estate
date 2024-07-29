@@ -11,4 +11,5 @@ import com.loinguyen1905.realestate.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findUserByUsername(String username);
+    Optional<UserEntity> findByUsernameAndRefreshToken(String username, String refreshToken);
 }

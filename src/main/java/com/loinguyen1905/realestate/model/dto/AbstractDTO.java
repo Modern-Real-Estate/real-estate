@@ -24,7 +24,7 @@ public class AbstractDTO<T> implements Serializable {
 
     @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     private Instant createdDate;
-    @JsonFormat(pattern = "HH-mm-ss dd-MM-yyyy a", timezone = "GMT+7")
+    @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     private Instant updatedDate;
 
     private String createdBy;

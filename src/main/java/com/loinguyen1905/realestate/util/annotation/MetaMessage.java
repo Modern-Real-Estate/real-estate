@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface APIMessage {
+public @interface MetaMessage {
     String message() default "Success";
 }

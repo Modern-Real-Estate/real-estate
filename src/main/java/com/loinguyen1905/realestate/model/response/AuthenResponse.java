@@ -1,5 +1,8 @@
 package com.loinguyen1905.realestate.model.response;
 
+import org.springframework.core.annotation.Order;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -20,5 +23,6 @@ public class AuthenResponse {
     @JsonProperty("user")
     private UserDTO userDTO;
     private String accessToken;
+    @JsonIgnore
     private String refreshToken;
 }

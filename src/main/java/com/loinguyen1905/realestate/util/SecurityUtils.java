@@ -2,6 +2,7 @@ package com.loinguyen1905.realestate.util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -91,12 +92,12 @@ public class SecurityUtils {
      * @param authorities the authorities to check.
      * @return true if the current user has any of the authorities, false otherwise.
      */
-    // public static boolean hasCurrentUserAnyOfAuthorities(String... authorities) {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //     return (
-    //         authentication != null && getAuthorities(authentication).anyMatch(authority -> Arrays.asList(authorities).contains(authority))
-    //     );
-    // }
+    public static boolean hasCurrentUserAnyOfAuthorities(String... authorities) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (
+            authentication != null && getAuthorities(authentication).anyMatch(authority -> Arrays.asList(authorities).contains(authority))
+        );
+    }
 
     /**
      * Checks if the current user has none of the authorities.
@@ -104,9 +105,9 @@ public class SecurityUtils {
      * @param authorities the authorities to check.
      * @return true if the current user has none of the authorities, false otherwise.
      */
-    // public static boolean hasCurrentUserNoneOfAuthorities(String... authorities) {
-    //     return !hasCurrentUserAnyOfAuthorities(authorities);
-    // }
+    public static boolean hasCurrentUserNoneOfAuthorities(String... authorities) {
+        return !hasCurrentUserAnyOfAuthorities(authorities);
+    }
 
     /**
      * Checks if the current user has a specific authority.
@@ -114,9 +115,9 @@ public class SecurityUtils {
      * @param authority the authority to check.
      * @return true if the current user has the authority, false otherwise.
      */
-    // public static boolean hasCurrentUserThisAuthority(String authority) {
-    //     return hasCurrentUserAnyOfAuthorities(authority);
-    // }
+    public static boolean hasCurrentUserThisAuthority(String authority) {
+        return hasCurrentUserAnyOfAuthorities(authority);
+    }
 
     private static Stream<String> getAuthorities(Authentication authentication) {
         return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority);

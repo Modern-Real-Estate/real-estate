@@ -13,7 +13,7 @@ import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.request.BuildingRequest;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
 import com.loinguyen1905.realestate.service.IBuildingService;
-import com.loinguyen1905.realestate.util.annotation.APIMessage;
+import com.loinguyen1905.realestate.util.annotation.MetaMessage;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,34 +31,34 @@ public class BuildingController {
     private IBuildingService buildingService;
 
     @GetMapping
-    @APIMessage(message = "Fetch buildings with filter and pageable")
+    @MetaMessage(message = "Fetch buildings with filter and pageable")
     public ResponseEntity<List<BuildingDTO>> getBuilding(
-        @ModelAttribute(SystemConstant.MODEL) 
+        @ModelAttribute(SystemConstant.MODEL)
         BuildingSearchRequest buildingSearchRequest
     ) {
         return ResponseEntity.ok().body(buildingService.handleGetBuildings(buildingSearchRequest));
     }
 
     @GetMapping("/{id}")
-    @APIMessage(message = "Fetch building with id")
+    @MetaMessage(message = "Fetch building with id")
     public ResponseEntity<BuildingDTO> getBuildingById(@PathVariable(required = true) UUID id) {
         return ResponseEntity.ok().body(buildingService.handleGetBuildingById(id));
     }
 
     @PostMapping
-    @APIMessage(message = "Add new building")
+    @MetaMessage(message = "Add new building")
     public ResponseEntity<BuildingDTO> addBuilding(@RequestBody BuildingRequest buildingRequest) {
         return ResponseEntity.status(HttpStatus.CREATED.value()).body(buildingService.handleAddOrUpdateBuilding(buildingRequest));
     }
     
     @PutMapping
-    @APIMessage(message = "Update building with new data")
+    @MetaMessage(message = "Update building with new data")
     public ResponseEntity<BuildingDTO> updateBuilding(@RequestBody BuildingRequest buildingRequest) {
         return ResponseEntity.ok().body(buildingService.handleAddOrUpdateBuilding(buildingRequest));
     }
 
     @DeleteMapping("/{ids}")
-    @APIMessage(message = "Delete buildings with ids[]")
+    @MetaMessage(message = "Delete buildings with ids[]")
     public ResponseEntity<Void> deleteBuildingById(
         @PathVariable(required = true) List<UUID> ids
     ) {

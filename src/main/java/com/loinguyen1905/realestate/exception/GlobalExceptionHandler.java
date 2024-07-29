@@ -67,8 +67,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(restResponse);
     }
 
-    @ExceptionHandler(value = MyException.class)
-    public ResponseEntity<RestResponse<Object>> handldeException(MyException ex) {
+    @ExceptionHandler(value = CustomException.class)
+    public ResponseEntity<RestResponse<Object>> handldeException(CustomException ex) {
         RestResponse<Object> restResponse = RestResponse
             .builder()
             .statusCode(ex.getStatusCode())

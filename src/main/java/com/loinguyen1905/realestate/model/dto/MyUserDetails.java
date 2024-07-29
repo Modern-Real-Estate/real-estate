@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -22,8 +23,7 @@ public class MyUserDetails implements UserDetails {
     private Boolean status;
     private String email;
     private String phone;
-
-    @Column(name = "type", insertable = false, updatable = false)
+    private List<String> roles;
     private String type;
 
     @Override

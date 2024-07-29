@@ -50,10 +50,10 @@ public class AuthController {
     @PostMapping("/login")
     @MetaMessage(message = "Login success")
     public ResponseEntity<AuthenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-            AuthenResponse authenResponse = authService.handleLogin(loginRequest);
+        AuthenResponse authenResponse = authService.handleLogin(loginRequest);
         return ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
-        .body(authenResponse);
+            .body(authenResponse);
     }
 
     @PostMapping("/register")
@@ -77,18 +77,17 @@ public class AuthController {
 
     @GetMapping("/account")
     @MetaMessage(message = "Get my account success")
-    public ResponseEntity<UserDTO> getAccount() {
+    public ResponseEntity<AuthenResponse> getAccount() {
         String username = SecurityUtils.getCurrentUserLogin()
             .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
-        return ResponseEntity.ok().body(userService.handleGetUserByUsername(username));
+        AuthenResponse authenResponse = AuthenResponse.builder().userDTO(userService.handleGetUserByUsername(username)).build();
+        return ResponseEntity.ok().body(authenResponse);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
-        String username = SecurityUtils.getCurrentUserLogin()
-            .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
-        return ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
+        String username = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new UsernameNotFoundException("Not found username"));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .header(HttpHeaders.SET_COOKIE, cookieUtils.deleteCookie(SystemConstant.REFRESH_TOKEN).toString())
             .body(authService.handleLogout(username));
     }

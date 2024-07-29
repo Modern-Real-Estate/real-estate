@@ -5,8 +5,8 @@ import java.util.TreeMap;
 
 public enum TransactionType {
     DEPOSIT("deposit"),
-    INSPECTION ("inspection"),
-    CONSULT ("consult");
+    INSPECTION("inspection"),
+    CONSULT("consult");
 
     private final String transactionType;
 

@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.config;
+package com.loinguyen1905.realestate.configuration;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

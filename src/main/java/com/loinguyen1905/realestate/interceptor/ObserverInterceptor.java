@@ -5,13 +5,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.*;
-import lombok.extern.slf4j.Slf4j;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 @Component("handlerInterceptor")
-public class BasicAuthInterceptor implements HandlerInterceptor {
+public class ObserverInterceptor implements HandlerInterceptor {
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "admin";
 

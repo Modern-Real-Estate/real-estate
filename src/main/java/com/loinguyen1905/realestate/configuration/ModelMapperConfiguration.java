@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.config;
+package com.loinguyen1905.realestate.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

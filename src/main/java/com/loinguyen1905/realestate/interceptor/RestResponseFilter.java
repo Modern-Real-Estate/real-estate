@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.util;
+package com.loinguyen1905.realestate.interceptor;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -21,7 +21,6 @@ public class RestResponseFilter implements ResponseBodyAdvice<Object> {
     public boolean supports(MethodParameter returnType, Class converterType) {
         return true;
     }
-
     @Override
     @Nullable
     public Object beforeBodyWrite(

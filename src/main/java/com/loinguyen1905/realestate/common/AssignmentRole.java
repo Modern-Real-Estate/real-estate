@@ -5,8 +5,8 @@ import java.util.TreeMap;
 
 public enum AssignmentRole {
     MANAGER("manager"),
-    SECURITY ("security"),
-    MAINTENANCE ("maintenance");
+    SECURITY("security"),
+    MAINTENANCE("maintenance");
 
     private final String assignmentRole;
 

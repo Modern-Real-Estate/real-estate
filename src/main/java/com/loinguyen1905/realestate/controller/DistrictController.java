@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@RequestMapping("/districts")
+@RequestMapping("${release.api.prefix}/districts")
 public class DistrictController {
-
     @Autowired
     private IDistrictService districtService;
 
@@ -24,5 +23,4 @@ public class DistrictController {
     public ResponseEntity<List<DistrictDTO>> getAll() {
         return ResponseEntity.ok().body(districtService.handleGetAllDistrict());
     }
-    
 }

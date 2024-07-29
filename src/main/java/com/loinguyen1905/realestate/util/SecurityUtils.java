@@ -1,14 +1,11 @@
 package com.loinguyen1905.realestate.util;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -17,25 +14,19 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
 import com.loinguyen1905.realestate.model.request.LoginRequest;
 
 @Component
-@PropertySource("classpath:application-dev.properties")
 public class SecurityUtils {
-
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
     @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @Value("${winnguyen1905.jwt.access_token-validity-in-seconds}")
+    @Value("${realestate.jwt.access_token-validity-in-seconds}")
     private String jwtExpiration;
 
     public Authentication authentication(LoginRequest loginRequest) {

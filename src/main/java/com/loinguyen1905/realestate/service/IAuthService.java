@@ -5,8 +5,9 @@ import com.loinguyen1905.realestate.model.request.RegisterRequest;
 import com.loinguyen1905.realestate.model.response.AuthenResponse;
 
 public interface IAuthService {
-    public AuthenResponse login(LoginRequest loginRequest);
-    public AuthenResponse register(RegisterRequest registerRequest);
+    public AuthenResponse handleLogin(LoginRequest loginRequest);
+    public AuthenResponse handleRegister(RegisterRequest registerRequest);
     public AuthenResponse handleGetAuthenResponseByUsernameAndRefreshToken(String username, String refreshToken);
-    public void handleUpdateUsersRefreshToken(String username, String refreshToken);
+    public Void handleUpdateUsersRefreshToken(String username, String refreshToken);
+    public Void handleLogout(String username);
 }

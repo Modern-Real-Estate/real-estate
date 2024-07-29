@@ -22,9 +22,9 @@ public class JwtUtils {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
     @Autowired
     private JwtEncoder jwtEncoder;
-    @Value("${winnguyen1905.jwt.access_token-validity-in-seconds}")
+    @Value("${realestate.jwt.access_token-validity-in-seconds}")
     private String jwtAccessTokenExpiration;
-    @Value("${winnguyen1905.jwt.refresh_token-validity-in-seconds}")
+    @Value("${realestate.jwt.refresh_token-validity-in-seconds}")
     private String jwtRefreshTokenExpiration;
     
     public JwtClaimsSet createJwtClaimsSet(MyUserDetails myUserDetails, Instant now, Instant validity) {

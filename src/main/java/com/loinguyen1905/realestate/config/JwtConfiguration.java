@@ -20,10 +20,8 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
 
 @Configuration
-@PropertySource("classpath:application-dev.properties")
 public class JwtConfiguration {
-
-    @Value("${winnguyen1905.jwt.base64-secret}")
+    @Value("${realestate.jwt.base64-secret}")
     private String jwtKey;
 
     public SecretKey secretKey() {

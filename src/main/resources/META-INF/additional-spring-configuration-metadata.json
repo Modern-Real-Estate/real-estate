@@ -1,17 +1,32 @@
 {"properties": [
   {
-    "name": "winnguyen1905.jwt.base64-secret",
+    "name": "realestate.jwt.base64-secret",
     "type": "java.lang.String",
-    "description": "A description for 'winnguyen1905.jwt.base64-secret'"
+    "description": "A description for 'realestate.jwt.base64-secret'"
   },
   {
-    "name": "winnguyen1905.jwt.access_token-validity-in-seconds",
+    "name": "realestate.jwt.access_token-validity-in-seconds",
     "type": "java.lang.String",
-    "description": "A description for 'winnguyen1905.jwt.access_token-validity-in-seconds'"
+    "description": "A description for 'realestate.jwt.access_token-validity-in-seconds'"
   },
   {
-    "name": "winnguyen1905.jwt.refresh_token-validity-in-seconds",
+    "name": "realestate.jwt.refresh_token-validity-in-seconds",
     "type": "java.lang.String",
-    "description": "A description for 'winnguyen1905.jwt.refresh_token-validity-in-seconds'"
+    "description": "A description for 'realestate.jwt.refresh_token-validity-in-seconds'"
+  },
+  {
+    "name": "release.api.prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'release.api.prefix'"
+  },
+  {
+    "name": "beta.api.prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'beta.api.prefix'"
+  },
+  {
+    "name": "test.api.prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'test.api.prefix'"
   }
 ]}

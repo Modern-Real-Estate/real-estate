@@ -23,7 +23,6 @@ import com.loinguyen1905.realestate.model.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse<Object>> validationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();

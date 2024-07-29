@@ -15,8 +15,8 @@ import com.loinguyen1905.realestate.util.annotation.MetaMessage;
 import jakarta.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
-public class FormatRestResponse implements ResponseBodyAdvice<Object> {
-
+@SuppressWarnings({"null", "rawtypes"})
+public class RestResponseFilter implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         return true;
@@ -25,15 +25,14 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
     @Override
     @Nullable
     public Object beforeBodyWrite(
-        @Nullable Object body, MethodParameter returnType, MediaType selectedContentType,
-        Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response
+        Object body, MethodParameter returnType, MediaType selectedContentType,
+        Class selectedConverterType, ServerHttpRequest request, 
+        ServerHttpResponse response
     ) {
-        if(body instanceof String) return body;
-
+        if(body == null) return body;
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
         int statusCode = servletResponse.getStatus();
         RestResponse<Object> restResponse = RestResponse.builder().statusCode(statusCode).build();
-
         if(statusCode > 399) return body;
         else {
             restResponse.setData((Object) body);

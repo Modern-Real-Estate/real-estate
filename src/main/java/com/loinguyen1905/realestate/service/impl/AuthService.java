@@ -47,7 +47,7 @@ public class AuthService implements IAuthService {
     private AuthenResponseConverter authenResponseConverter;
 
     @Override
-    public AuthenResponse login(LoginRequest loginRequest) {
+    public AuthenResponse handleLogin(LoginRequest loginRequest) {
         Authentication authenticResults = securityUtils.authentication(loginRequest);
         Pair<String, String> tokenPair = jwtUtils.createTokenPair((MyUserDetails) authenticResults.getPrincipal());
         handleUpdateUsersRefreshToken(loginRequest.getUsername(), tokenPair.getSecond());
@@ -56,7 +56,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public AuthenResponse register(RegisterRequest registerRequest) {
+    public AuthenResponse handleRegister(RegisterRequest registerRequest) {
         UserEntity user = userConverter.toUserEntity(registerRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
@@ -64,11 +64,12 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public void handleUpdateUsersRefreshToken(String username, String refreshToken) {
+    public Void handleUpdateUsersRefreshToken(String username, String refreshToken) {
         UserEntity user = userRepository.findUserByUsername(username)
             .orElseThrow(() -> new CustomException("Not found user with username " + username));
         user.setRefreshToken(refreshToken);
         userRepository.save(user);
+        return null;
     }
 
     @Override
@@ -78,5 +79,14 @@ public class AuthService implements IAuthService {
         Pair<String, String> tokenPair = jwtUtils.createTokenPair(modelMapper.map(user, MyUserDetails.class));
         handleUpdateUsersRefreshToken(username, tokenPair.getSecond());
         return authenResponseConverter.toAuthenResponse(user, tokenPair);
+    }
+
+    @Override
+    public Void handleLogout(String username) {
+        UserEntity user = userRepository.findUserByUsername(username)
+            .orElseThrow(() -> new CustomException("Not found user with username " + username));
+        user.setRefreshToken(null);
+        userRepository.save(user);
+        return null;
     }
 }

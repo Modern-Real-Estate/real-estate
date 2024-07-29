@@ -1,5 +1,8 @@
 package com.loinguyen1905.realestate.config;
 
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseCookie;
@@ -11,14 +14,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.loinguyen1905.realestate.common.SystemConstant;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
+    @Value("${release.api.prefix}")
+    private String releaseAPI;
 
+    @Value("${beta.api.prefix}")
+    private String betaAPI;
+
+    @Value("${test.api.prefix}")
+    private String testAPI;
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -34,13 +46,14 @@ public class SecurityConfiguration {
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(
                 authz -> authz
-                    .requestMatchers("/api/v1/auth/**").permitAll()
+                    .requestMatchers(testAPI + "/**").permitAll()
+                    .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                     .anyRequest().authenticated()
             )
             .oauth2ResourceServer(
                 (oauth2) -> oauth2
                     .jwt(Customizer.withDefaults())
-                    .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .authenticationEntryPoint(customAuthenticationEntryPoint) // 401
             )
             // .exceptionHandling(
             //     (exceptions) -> exceptions
@@ -50,5 +63,18 @@ public class SecurityConfiguration {
             .formLogin(f -> f.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
+    }
+    
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://locolhost:3000.com", "https://locolhost:3001.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "DELETE", "PUT", "PATCH"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Accept"));
+        configuration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

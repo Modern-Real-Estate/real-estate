@@ -1,19 +1,29 @@
 package com.loinguyen1905.realestate.util;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
-import com.loinguyen1905.realestate.common.SystemConstant;
-
 @Component
+@PropertySource("classpath:application-dev.properties")
 public class CookieUtils {
-    @Value("${winnguyen1905.jwt.refresh_token-validity-in-seconds}")
+    @Value("${realestate.jwt.refresh_token-validity-in-seconds}")
     private String jwtRefreshTokenExpiration;
 
-    public ResponseCookie creatResponseCookie(String refreshToken) {
+    public ResponseCookie deleteCookie(String name) {
         return ResponseCookie
-            .from(SystemConstant.REFRESH_TOKEN, refreshToken)
+            .from(name, "")
+            .httpOnly(true)
+            .secure(true)
+            .path("/")
+            .maxAge(0)
+            .build();
+    }
+    
+    public ResponseCookie createCookie(String name, String refreshToken) {
+        return ResponseCookie
+            .from(name, refreshToken)
             .httpOnly(true)
             .secure(true)
             .path("/")

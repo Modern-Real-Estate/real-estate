@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.loinguyen1905.realestate.converter.AuthenResponseConverter;
 import com.loinguyen1905.realestate.converter.UserConverter;
 import com.loinguyen1905.realestate.entity.UserEntity;
-import com.loinguyen1905.realestate.exception.CustomException;
+import com.loinguyen1905.realestate.exception.CustomRuntimeException;
 import com.loinguyen1905.realestate.model.dto.MyUserDetails;
 import com.loinguyen1905.realestate.model.dto.UserDTO;
 import com.loinguyen1905.realestate.model.request.LoginRequest;
@@ -67,7 +67,7 @@ public class AuthService implements IAuthService {
     @Override
     public Void handleUpdateUsersRefreshToken(String username, String refreshToken) {
         UserEntity user = this.userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new CustomException("Not found user with username " + username));
+                .orElseThrow(() -> new CustomRuntimeException("Not found user with username " + username));
         user.setRefreshToken(refreshToken);
         this.userRepository.save(user);
         return null;
@@ -76,7 +76,7 @@ public class AuthService implements IAuthService {
     @Override
     public AuthenResponse handleGetAuthenResponseByUsernameAndRefreshToken(String username, String refreshToken) {
         UserEntity user = this.userRepository.findByUsernameAndRefreshToken(username, refreshToken)
-                .orElseThrow(() -> new CustomException("Not found user with refresh token and username " + username));
+                .orElseThrow(() -> new CustomRuntimeException("Not found user with refresh token and username " + username));
         Pair<String, String> tokenPair = this.jwtUtils.createTokenPair(this.modelMapper.map(user, MyUserDetails.class));
         handleUpdateUsersRefreshToken(username, tokenPair.getSecond());
         return this.authenResponseConverter.toAuthenResponse(user, tokenPair);
@@ -85,7 +85,7 @@ public class AuthService implements IAuthService {
     @Override
     public Void handleLogout(String username) {
         UserEntity user = this.userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new CustomException("Not found user with username " + username));
+                .orElseThrow(() -> new CustomRuntimeException("Not found user with username " + username));
         user.setRefreshToken(null);
         this.userRepository.save(user);
         return null;

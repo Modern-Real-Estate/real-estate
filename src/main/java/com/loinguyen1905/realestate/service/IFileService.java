@@ -5,7 +5,9 @@ import java.net.URISyntaxException;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.loinguyen1905.realestate.model.dto.FileDTO;
+
 public interface IFileService {
     void handleCreateDirectory(String folder) throws URISyntaxException;
-    void handleUploadFile(String dest, MultipartFile file) throws URISyntaxException, IOException;
+    FileDTO handleUploadFile(String dest, MultipartFile file) throws URISyntaxException, IOException;
 }

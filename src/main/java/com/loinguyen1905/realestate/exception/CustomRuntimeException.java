@@ -9,18 +9,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomException extends RuntimeException {
+public class CustomRuntimeException extends RuntimeException {
     private Integer statusCode;
     private String message;
     private Object error;
 
-    public CustomException(String message) {
+    public CustomRuntimeException(String message) {
         this.message = message;
         this.statusCode = 400;
         this.error = "Exception occurs";
     }
 
-    public CustomException(String message, Integer statusCode) {
+    public CustomRuntimeException(String message, Integer statusCode) {
         this.message = message;
         this.statusCode = statusCode;
         this.error = "Exception occurs";

@@ -35,8 +35,8 @@ public class RestResponseFilter implements ResponseBodyAdvice<Object> {
         if(statusCode > 399) return body;
         else {
             restResponse.setData((Object) body);
-            MetaMessage message = returnType.getMethodAnnotation(MetaMessage.class);
-            restResponse.setMessage(message.message());
+            if(returnType.getMethodAnnotation(MetaMessage.class) instanceof MetaMessage message)
+                restResponse.setMessage(message.message());
         }
         return restResponse;
     }

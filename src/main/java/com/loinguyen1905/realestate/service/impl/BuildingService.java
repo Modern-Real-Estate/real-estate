@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.loinguyen1905.realestate.converter.BuildingConverter;
 import com.loinguyen1905.realestate.entity.BuildingEntity;
 import com.loinguyen1905.realestate.entity.DistrictEntity;
-import com.loinguyen1905.realestate.exception.CustomException;
+import com.loinguyen1905.realestate.exception.CustomRuntimeException;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.dto.DistrictDTO;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
@@ -44,7 +44,7 @@ public class BuildingService implements IBuildingService {
     @Override
     public BuildingDTO handleGetBuildingById(UUID id) {
         BuildingEntity building = this.buildingRepository.findById(id)
-                .orElseThrow(() -> new CustomException("Not found buidling with id " + id));
+                .orElseThrow(() -> new CustomRuntimeException("Not found buidling with id " + id));
         return this.buildingConverter.toBuildingDTO(building);
     }
 

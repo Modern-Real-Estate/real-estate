@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
-import com.loinguyen1905.realestate.exception.CustomException;
+import com.loinguyen1905.realestate.exception.CustomRuntimeException;
 import com.loinguyen1905.realestate.util.SecurityUtils;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
@@ -47,7 +47,7 @@ public class JwtConfiguration {
                 return nimbusJwtDecoder.decode(token);
             } catch (Exception e) {
                 System.out.println("Token error: " + token);
-                throw new CustomException("refresh token invalid", 401);
+                throw new CustomRuntimeException("refresh token invalid", 401);
             }
         };
     }

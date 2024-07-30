@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.loinguyen1905.realestate.model.dto.FileDTO;
 import com.loinguyen1905.realestate.service.IFileService;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
+import com.loinguyen1905.realestate.util.FileValidationUtils;
+import com.loinguyen1905.realestate.util.annotation.MetaMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,12 +27,15 @@ public class FileController {
     private String uri;
 
     @PostMapping
-    public ResponseEntity<Void> upload(
-        @RequestParam(name = "file") MultipartFile file,
+    @MetaMessage(message = "Upload file success")
+    public ResponseEntity<FileDTO> upload(
+        @RequestParam(name = "file", required = false) MultipartFile file,
         @RequestParam(name = "folder") String folderName
-    ) throws URISyntaxException, IOException {
+    ) throws Exception {
+        FileValidationUtils.validation(file);
         this.fileService.handleCreateDirectory(this.uri + folderName);
-        this.fileService.handleUploadFile(this.uri + folderName, file);
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(null);
+        return ResponseEntity
+            .status(HttpStatus.CREATED.value())
+            .body(this.fileService.handleUploadFile(this.uri + folderName, file));
     }
 }

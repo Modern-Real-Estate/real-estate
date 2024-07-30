@@ -9,10 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.loinguyen1905.realestate.model.dto.FileDTO;
 import com.loinguyen1905.realestate.service.IFileService;
 
 @Service
@@ -34,12 +36,13 @@ public class FileService implements IFileService {
     }
 
     @Override
-    public void handleUploadFile(String dest, MultipartFile file) throws URISyntaxException, IOException {
-        String uniqueName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
+    public FileDTO handleUploadFile(String dest, MultipartFile file) throws URISyntaxException, IOException {
+        String uniqueName = System.currentTimeMillis() + "-" + file.getOriginalFilename().replace(" ", "%");
         URI uri = new URI(dest + "/" + uniqueName);
         Path path = Paths.get(uri);
         try(InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         }
+        return new FileDTO(uniqueName, Instant.now());
     }
 }

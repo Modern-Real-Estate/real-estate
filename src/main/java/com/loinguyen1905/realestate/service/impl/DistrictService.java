@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.loinguyen1905.realestate.entity.DistrictEntity;
-import com.loinguyen1905.realestate.exception.CustomException;
+import com.loinguyen1905.realestate.exception.CustomRuntimeException;
 import com.loinguyen1905.realestate.model.dto.DistrictDTO;
 import com.loinguyen1905.realestate.repository.DistrictRepository;
 import com.loinguyen1905.realestate.service.IDistrictService;
@@ -35,7 +35,7 @@ public class DistrictService implements IDistrictService {
     @Override
     public DistrictDTO handleGetDistrictById(UUID id) {
         DistrictEntity district = this.districtRepository.findById(id)
-                .orElseThrow(() -> new CustomException("Not found district id " + id));
+                .orElseThrow(() -> new CustomRuntimeException("Not found district id " + id));
         return this.modelMapper.map(district, DistrictDTO.class);
     }
 

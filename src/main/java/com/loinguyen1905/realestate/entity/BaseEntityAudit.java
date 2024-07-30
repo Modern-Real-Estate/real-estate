@@ -61,9 +61,8 @@ public abstract class BaseEntityAudit extends BaseEntity {
 
     public String findSystemUser() {
         Optional<String> isExitIdentify = SecurityUtils.getCurrentUserLogin();
-        if(isExitIdentify.isPresent() && isExitIdentify.get() instanceof String identify) 
-            return identify;
-        else return "Unknown";
+        if(isExitIdentify.isPresent() && isExitIdentify.get() instanceof String identify) return identify;
+        else return null;
     }
 
     @PrePersist

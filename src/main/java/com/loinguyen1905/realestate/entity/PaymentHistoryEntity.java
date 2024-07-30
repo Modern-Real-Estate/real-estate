@@ -5,6 +5,8 @@ import com.loinguyen1905.realestate.common.PaymentMethod;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -26,6 +28,7 @@ public class PaymentHistoryEntity extends BaseEntityAudit {
     @Column(name = "paid_amount")
     private String paidAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_method")
     private PaymentMethod paymentMethod;
 

@@ -11,7 +11,6 @@ import com.loinguyen1905.realestate.model.response.AuthenResponse;
 
 @Component
 public class AuthenResponseConverter {
-
     @Autowired
     public ModelMapper modelMapper;
 

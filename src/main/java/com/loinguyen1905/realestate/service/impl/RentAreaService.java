@@ -22,13 +22,13 @@ public class RentAreaService implements IRentAreaService {
 
     @Override
     public List<RentAreaDTO> handleGetRentAreaByIds(List<UUID> ids) {
-        List<RentAreaEntity> rentAreas = rentAreaRepository.findAllById(ids);
-        return rentAreas.stream().map(item -> modelMapper.map(item, RentAreaDTO.class)).toList();
+        List<RentAreaEntity> rentAreas = this.rentAreaRepository.findAllById(ids);
+        return rentAreas.stream().map(item -> this.modelMapper.map(item, RentAreaDTO.class)).toList();
     }
 
     @Override
     public RentAreaDTO handleAddRentArea(RentAreaDTO rentAreaDTO) {
-        RentAreaEntity rentarea = rentAreaRepository.save(modelMapper.map(rentAreaDTO, RentAreaEntity.class));
-        return modelMapper.map(rentarea, RentAreaDTO.class);
+        RentAreaEntity rentarea = this.rentAreaRepository.save(this.modelMapper.map(rentAreaDTO, RentAreaEntity.class));
+        return this.modelMapper.map(rentarea, RentAreaDTO.class);
     }
 }

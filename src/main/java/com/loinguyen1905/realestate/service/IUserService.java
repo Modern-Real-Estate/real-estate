@@ -6,6 +6,8 @@ import com.loinguyen1905.realestate.model.dto.UserDTO;
 
 public interface IUserService {
     public UserDTO handleGetUserByUsername(String username);
+
     public UserDTO handleGetUserById(UUID id);
+
     public UserDTO handleUpdateUser(UUID id);
 }

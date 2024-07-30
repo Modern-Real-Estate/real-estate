@@ -37,32 +37,33 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public List<BuildingDTO> handleGetBuildings(BuildingSearchRequest buildingSearchRequest) {
-        List<BuildingEntity> buildings = buildingRepository.findAll(buildingSearchRequest);
-        return buildings.stream().map(item -> buildingConverter.toBuildingDTO(item)).toList();
+        List<BuildingEntity> buildings = this.buildingRepository.findAll(buildingSearchRequest);
+        return buildings.stream().map(item -> this.buildingConverter.toBuildingDTO(item)).toList();
     }
 
     @Override
     public BuildingDTO handleGetBuildingById(UUID id) {
-        BuildingEntity building = buildingRepository.findById(id)
-            .orElseThrow(() -> new CustomException("Not found buidling with id " + id));
-        return buildingConverter.toBuildingDTO(building);
+        BuildingEntity building = this.buildingRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Not found buidling with id " + id));
+        return this.buildingConverter.toBuildingDTO(building);
     }
 
     @Override
     public void handleDeleteBuildingByIds(List<UUID> ids) {
-        buildingRepository.deleteByIdIn(ids);
+        this.buildingRepository.deleteByIdIn(ids);
     }
-    
+
     @Override
     public BuildingDTO handleAddOrUpdateBuilding(BuildingRequest buildingRequest) {
-        BuildingEntity newData = buildingConverter.toBuildingEntity(buildingRequest); // To building
-        if(buildingRequest.getDistrictId() instanceof UUID id) // Set district in both case
-            newData.setDistrict(modelMapper.map(districtService.handleGetDistrictById(id), DistrictEntity.class));
-        if(buildingRequest.getId() instanceof UUID id) { // Update
-            BuildingEntity beModifiedBuilding = buildingRepository.findById(id).orElseThrow(null);
+        BuildingEntity newData = this.buildingConverter.toBuildingEntity(buildingRequest); // To building
+        if (buildingRequest.getDistrictId() instanceof UUID id) // Set district in both case
+            newData.setDistrict(this.modelMapper.map(this.districtService.handleGetDistrictById(id), DistrictEntity.class));
+        if (buildingRequest.getId() instanceof UUID id) { // Update
+            BuildingEntity beModifiedBuilding = this.buildingRepository.findById(id).orElseThrow(null);
             beModifiedBuilding = OverwriteUtils.overwrireObject(newData, beModifiedBuilding);
-            newData = buildingRepository.save(beModifiedBuilding);
-        } else newData = buildingRepository.save(newData); // Create
-        return buildingConverter.toBuildingDTO(newData);
+            newData = this.buildingRepository.save(beModifiedBuilding);
+        } else
+            newData = this.buildingRepository.save(newData); // Create
+        return this.buildingConverter.toBuildingDTO(newData);
     }
 }

@@ -24,20 +24,19 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(
-        HttpServletRequest request, HttpServletResponse response, AuthenticationException authException
-    ) throws IOException, ServletException {
-        delegate.commence(request, response, authException);
+            HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+            throws IOException, ServletException {
+        this.delegate.commence(request, response, authException);
         response.setContentType("application/json;charset=UTF-8");
         RestResponse<Object> res = RestResponse
-            .builder()
-            .statusCode(HttpStatus.UNAUTHORIZED.value())
-            .message("Authentication failed please check your token")
-            .error(
-                Optional.ofNullable(authException.getCause())
-                    .map(Throwable::getMessage)
-                    .orElse(authException.getMessage())
-            )
-            .build();
-        mapper.writeValue(response.getWriter(), res);
+                .builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .message("Authentication failed please check your token")
+                .error(
+                        Optional.ofNullable(authException.getCause())
+                                .map(Throwable::getMessage)
+                                .orElse(authException.getMessage()))
+                .build();
+        this.mapper.writeValue(response.getWriter(), res);
     }
 }

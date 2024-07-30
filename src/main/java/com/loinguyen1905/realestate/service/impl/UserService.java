@@ -22,16 +22,16 @@ public class UserService implements IUserService {
 
     @Override
     public UserDTO handleGetUserByUsername(String username) {
-        UserEntity user = userRepository.findUserByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Not found user by username " + username));
-        return modelMapper.map(user, UserDTO.class);
+        UserEntity user = this.userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Not found user by username " + username));
+        return this.modelMapper.map(user, UserDTO.class);
     }
 
     @Override
     public UserDTO handleGetUserById(UUID id) {
-        UserEntity user = userRepository.findById(id)
-            .orElseThrow(() -> new UsernameNotFoundException("Not found user by id " + id));
-        return modelMapper.map(user, UserDTO.class);
+        UserEntity user = this.userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Not found user by id " + id));
+        return this.modelMapper.map(user, UserDTO.class);
     }
 
     @Override

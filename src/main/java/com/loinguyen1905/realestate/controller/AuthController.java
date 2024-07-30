@@ -50,16 +50,16 @@ public class AuthController {
     @PostMapping("/login")
     @MetaMessage(message = "Login success")
     public ResponseEntity<AuthenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        AuthenResponse authenResponse = authService.handleLogin(loginRequest);
+        AuthenResponse authenResponse = this.authService.handleLogin(loginRequest);
         return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
+            .header(HttpHeaders.SET_COOKIE, this.cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
             .body(authenResponse);
     }
 
     @PostMapping("/register")
     @MetaMessage(message = "Register success")
     public ResponseEntity<AuthenResponse> register(@Valid @RequestBody RegisterRequest registerRequest) { 
-        AuthenResponse authenResponse = authService.handleRegister(registerRequest);
+        AuthenResponse authenResponse = this.authService.handleRegister(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(authenResponse);
     }
 
@@ -68,10 +68,10 @@ public class AuthController {
     public ResponseEntity<AuthenResponse> getAuthenticationResultByRefreshToken(
         @CookieValue(name = "refresh_token", defaultValue = "Not found any refresh token") String refreshToken
     ) {
-        Jwt jwt = jwtDecoder.decode(refreshToken);
-        AuthenResponse authenResponse = authService.handleGetAuthenResponseByUsernameAndRefreshToken(jwt.getSubject(), refreshToken);
+        Jwt jwt = this.jwtDecoder.decode(refreshToken);
+        AuthenResponse authenResponse = this.authService.handleGetAuthenResponseByUsernameAndRefreshToken(jwt.getSubject(), refreshToken);
         return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
+            .header(HttpHeaders.SET_COOKIE, this.cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
             .body(authenResponse);
     }
 
@@ -80,7 +80,7 @@ public class AuthController {
     public ResponseEntity<AuthenResponse> getAccount() {
         String username = SecurityUtils.getCurrentUserLogin()
             .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
-        AuthenResponse authenResponse = AuthenResponse.builder().userDTO(userService.handleGetUserByUsername(username)).build();
+        AuthenResponse authenResponse = AuthenResponse.builder().userDTO(this.userService.handleGetUserByUsername(username)).build();
         return ResponseEntity.ok().body(authenResponse);
     }
 
@@ -88,7 +88,7 @@ public class AuthController {
     public ResponseEntity<Void> logout() {
         String username = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new UsernameNotFoundException("Not found username"));
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .header(HttpHeaders.SET_COOKIE, cookieUtils.deleteCookie(SystemConstant.REFRESH_TOKEN).toString())
-            .body(authService.handleLogout(username));
+            .header(HttpHeaders.SET_COOKIE, this.cookieUtils.deleteCookie(SystemConstant.REFRESH_TOKEN).toString())
+            .body(this.authService.handleLogout(username));
     }
 }

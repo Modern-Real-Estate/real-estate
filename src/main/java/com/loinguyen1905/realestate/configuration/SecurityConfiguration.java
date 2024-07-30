@@ -20,8 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.loinguyen1905.realestate.repository.UserRepository;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
@@ -34,7 +32,7 @@ public class SecurityConfiguration {
 
     @Value("${test.api.prefix}")
     private String testAPI;
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -51,7 +49,7 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(
                 authz -> authz
                     .requestMatchers(testAPI + "/**").permitAll()
-                    .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
+                    .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**").permitAll()
                     .anyRequest().authenticated()
             )
             .oauth2ResourceServer(
@@ -68,7 +66,7 @@ public class SecurityConfiguration {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
-    
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

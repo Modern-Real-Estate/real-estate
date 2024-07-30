@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.loinguyen1905.realestate.entity.UserEntity;
-import com.loinguyen1905.realestate.exception.CustomException;
 import com.loinguyen1905.realestate.model.dto.MyUserDetails;
 import com.loinguyen1905.realestate.repository.UserRepository;
 
@@ -22,8 +21,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findUserByUsername(username)
+        UserEntity user = this.userRepository.findUserByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("Not found user by username " + username));
-        return modelMapper.map(user, MyUserDetails.class);
+        return this.modelMapper.map(user, MyUserDetails.class);
     }
 }

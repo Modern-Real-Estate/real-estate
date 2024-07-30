@@ -37,7 +37,7 @@ public class AuthService implements IAuthService {
     private UserConverter userConverter;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired 
+    @Autowired
     private SecurityUtils securityUtils;
     @Autowired
     private JwtUtils jwtUtils;
@@ -48,45 +48,46 @@ public class AuthService implements IAuthService {
 
     @Override
     public AuthenResponse handleLogin(LoginRequest loginRequest) {
-        Authentication authenticResults = securityUtils.authentication(loginRequest);
-        Pair<String, String> tokenPair = jwtUtils.createTokenPair((MyUserDetails) authenticResults.getPrincipal());
+        Authentication authenticResults = this.securityUtils.authentication(loginRequest);
+        Pair<String, String> tokenPair = this.jwtUtils.createTokenPair((MyUserDetails) authenticResults.getPrincipal());
         handleUpdateUsersRefreshToken(loginRequest.getUsername(), tokenPair.getSecond());
         return authenResponseConverter
-            .toAuthenResponse(modelMapper.map((MyUserDetails) authenticResults.getPrincipal(), UserEntity.class), tokenPair);
+                .toAuthenResponse(this.modelMapper.map((MyUserDetails) authenticResults.getPrincipal(), UserEntity.class),
+                        tokenPair);
     }
 
     @Override
     public AuthenResponse handleRegister(RegisterRequest registerRequest) {
-        UserEntity user = userConverter.toUserEntity(registerRequest);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user = userRepository.save(user);
-        return authenResponseConverter.toAuthenResponse(user, null);
+        UserEntity user = this.userConverter.toUserEntity(registerRequest);
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        user = this.userRepository.save(user);
+        return this.authenResponseConverter.toAuthenResponse(user, null);
     }
 
     @Override
     public Void handleUpdateUsersRefreshToken(String username, String refreshToken) {
-        UserEntity user = userRepository.findUserByUsername(username)
-            .orElseThrow(() -> new CustomException("Not found user with username " + username));
+        UserEntity user = this.userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new CustomException("Not found user with username " + username));
         user.setRefreshToken(refreshToken);
-        userRepository.save(user);
+        this.userRepository.save(user);
         return null;
     }
 
     @Override
     public AuthenResponse handleGetAuthenResponseByUsernameAndRefreshToken(String username, String refreshToken) {
-        UserEntity user = userRepository.findByUsernameAndRefreshToken(username, refreshToken)
-            .orElseThrow(() -> new CustomException("Not found user with refresh token and username " + username));
-        Pair<String, String> tokenPair = jwtUtils.createTokenPair(modelMapper.map(user, MyUserDetails.class));
+        UserEntity user = this.userRepository.findByUsernameAndRefreshToken(username, refreshToken)
+                .orElseThrow(() -> new CustomException("Not found user with refresh token and username " + username));
+        Pair<String, String> tokenPair = this.jwtUtils.createTokenPair(this.modelMapper.map(user, MyUserDetails.class));
         handleUpdateUsersRefreshToken(username, tokenPair.getSecond());
-        return authenResponseConverter.toAuthenResponse(user, tokenPair);
+        return this.authenResponseConverter.toAuthenResponse(user, tokenPair);
     }
 
     @Override
     public Void handleLogout(String username) {
-        UserEntity user = userRepository.findUserByUsername(username)
-            .orElseThrow(() -> new CustomException("Not found user with username " + username));
+        UserEntity user = this.userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new CustomException("Not found user with username " + username));
         user.setRefreshToken(null);
-        userRepository.save(user);
+        this.userRepository.save(user);
         return null;
     }
 }

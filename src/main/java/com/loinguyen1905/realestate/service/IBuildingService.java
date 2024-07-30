@@ -9,13 +9,17 @@ import com.loinguyen1905.realestate.model.request.BuildingRequest;
 
 public interface IBuildingService {
     List<BuildingDTO> handleGetBuildings(BuildingSearchRequest buildingSearchRequest);
+
     BuildingDTO handleGetBuildingById(UUID id);
+
     void handleDeleteBuildingByIds(List<UUID> ids);
+
     BuildingDTO handleAddOrUpdateBuilding(BuildingRequest buildingRequestDTO);
-    
+
     // void updateOraddBuilding(BuildingDTO buildingDTO);
     // void deleteBuildings(List<Long> ids);
     // ResponseDTO loadStaffs(Long buildingId);
     // void updateAssignment(AssignmentDTO assignmentBuildingDTO);
-    // int countTotalItems(BuildingSearchRequest buildingSearchRequest, Pageable pageable);
+    // int countTotalItems(BuildingSearchRequest buildingSearchRequest, Pageable
+    // pageable);
 }

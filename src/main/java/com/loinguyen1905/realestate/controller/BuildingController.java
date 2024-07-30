@@ -36,25 +36,25 @@ public class BuildingController {
         @ModelAttribute(SystemConstant.MODEL)
         BuildingSearchRequest buildingSearchRequest
     ) {
-        return ResponseEntity.ok().body(buildingService.handleGetBuildings(buildingSearchRequest));
+        return ResponseEntity.ok().body(this.buildingService.handleGetBuildings(buildingSearchRequest));
     }
 
     @GetMapping("/{id}")
     @MetaMessage(message = "Fetch building with id")
     public ResponseEntity<BuildingDTO> getBuildingById(@PathVariable(required = true) UUID id) {
-        return ResponseEntity.ok().body(buildingService.handleGetBuildingById(id));
+        return ResponseEntity.ok().body(this.buildingService.handleGetBuildingById(id));
     }
 
     @PostMapping
     @MetaMessage(message = "Add new building")
     public ResponseEntity<BuildingDTO> addBuilding(@RequestBody BuildingRequest buildingRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(buildingService.handleAddOrUpdateBuilding(buildingRequest));
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.buildingService.handleAddOrUpdateBuilding(buildingRequest));
     }
     
     @PutMapping
     @MetaMessage(message = "Update building with new data")
     public ResponseEntity<BuildingDTO> updateBuilding(@RequestBody BuildingRequest buildingRequest) {
-        return ResponseEntity.ok().body(buildingService.handleAddOrUpdateBuilding(buildingRequest));
+        return ResponseEntity.ok().body(this.buildingService.handleAddOrUpdateBuilding(buildingRequest));
     }
 
     @DeleteMapping("/{ids}")
@@ -62,7 +62,7 @@ public class BuildingController {
     public ResponseEntity<Void> deleteBuildingById(
         @PathVariable(required = true) List<UUID> ids
     ) {
-        buildingService.handleDeleteBuildingByIds(ids);
+        this.buildingService.handleDeleteBuildingByIds(ids);
         return ResponseEntity.noContent().build();
     }
 

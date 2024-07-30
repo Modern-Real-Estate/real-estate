@@ -27,22 +27,22 @@ public class DistrictService implements IDistrictService {
 
     @Override
     public DistrictDTO handleAddDistrict(DistrictDTO districtDTO) {
-        DistrictEntity district = modelMapper.map(districtDTO, DistrictEntity.class);
-        district = districtRepository.save(district);
-        return modelMapper.map(district, DistrictDTO.class);
+        DistrictEntity district = this.modelMapper.map(districtDTO, DistrictEntity.class);
+        district = this.districtRepository.save(district);
+        return this.modelMapper.map(district, DistrictDTO.class);
     }
 
     @Override
     public DistrictDTO handleGetDistrictById(UUID id) {
-        DistrictEntity district = districtRepository.findById(id)
-            .orElseThrow(() -> new CustomException("Not found district id " + id));
-        return modelMapper.map(district, DistrictDTO.class);
+        DistrictEntity district = this.districtRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Not found district id " + id));
+        return this.modelMapper.map(district, DistrictDTO.class);
     }
 
     @Override
     public List<DistrictDTO> handleGetAllDistrict() {
-        List<DistrictEntity> districts = districtRepository.findAll();
+        List<DistrictEntity> districts = this.districtRepository.findAll();
         return districts.stream()
-            .map(item -> modelMapper.map(item, DistrictDTO.class)).toList();
-    }   
+                .map(item -> this.modelMapper.map(item, DistrictDTO.class)).toList();
+    }
 }

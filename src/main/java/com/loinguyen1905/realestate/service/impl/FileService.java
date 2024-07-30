@@ -1,6 +1,8 @@
 package com.loinguyen1905.realestate.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -11,9 +13,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.loinguyen1905.realestate.exception.CustomRuntimeException;
 import com.loinguyen1905.realestate.model.dto.FileDTO;
 import com.loinguyen1905.realestate.service.IFileService;
 
@@ -37,12 +41,29 @@ public class FileService implements IFileService {
 
     @Override
     public FileDTO handleUploadFile(String dest, MultipartFile file) throws URISyntaxException, IOException {
-        String uniqueName = System.currentTimeMillis() + "-" + file.getOriginalFilename().replace(" ", "%");
+        String uniqueName = System.currentTimeMillis() + "-" + file.getOriginalFilename().replace(" ", "_");
         URI uri = new URI(dest + "/" + uniqueName);
         Path path = Paths.get(uri);
         try(InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         }
-        return new FileDTO(uniqueName, Instant.now());
+        return new FileDTO(uniqueName, Instant.now(), path.toString());
+    }
+
+    @Override
+    public Long getFileLength(String fileName, String dest) throws URISyntaxException {
+        URI uri = new URI(dest + "/" + fileName);
+        Path path = Paths.get(uri);
+        File tmpDir = new File(path.toString());
+        if(!tmpDir.exists() || tmpDir.isDirectory()) throw new CustomRuntimeException("file name not found");
+        return tmpDir.length();
+    }
+
+    @Override
+    public InputStreamResource getResource(String fileName, String dest) throws FileNotFoundException, URISyntaxException {
+        URI uri = new URI(dest + "/" + fileName);
+        Path path = Paths.get(uri);
+        File file = new File(path.toString());
+        return new InputStreamResource(new FileInputStream(file));
     }
 }

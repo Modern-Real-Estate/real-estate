@@ -3,6 +3,7 @@ package com.loinguyen1905.realestate.model.dto;
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +17,7 @@ import lombok.Setter;
 public class FileDTO extends AbstractDTO<FileDTO> {
     private String fileName;
     @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
+    @JsonProperty("upload_date")
     private Instant uploadDate;
+    private String uri;
 }

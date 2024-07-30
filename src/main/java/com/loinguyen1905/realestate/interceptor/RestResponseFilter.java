@@ -1,6 +1,7 @@
 package com.loinguyen1905.realestate.interceptor;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -28,7 +29,7 @@ public class RestResponseFilter implements ResponseBodyAdvice<Object> {
         Class selectedConverterType, ServerHttpRequest request, 
         ServerHttpResponse response
     ) {
-        if(body == null) return body;
+        if(body == null || body instanceof Resource) return body;
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
         int statusCode = servletResponse.getStatus();
         RestResponse<Object> restResponse = RestResponse.builder().statusCode(statusCode).build();

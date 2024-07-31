@@ -1,23 +1,29 @@
 package com.loinguyen1905.realestate.repository.specification;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.util.Pair;
+import org.springframework.lang.Nullable;
 
-import com.loinguyen1905.realestate.entity.PermissionEntity;
-
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import lombok.val;
 
 public class CustomSpecification<T> {
 
-    private CustomSpecification() {}
+    public CustomSpecification() {}
 
     public static <T, F> Join<T, F> joinTable(Class<F> cls, String tableName, Root<T> root) {
         Join<T, F> joining = root.join(tableName);
         return joining;
+    }
+
+    public static <T> Specification<T> construct() {
+        return (root, query, builder) -> builder.isNotNull(root.get("id"));
     }
 
     public static <T> Specification<T> isValueLike(String stringLike, String col, Pair<Class<?>, String> tableJoin) {
@@ -61,6 +67,7 @@ public class CustomSpecification<T> {
         This will require us to first join the PermissionEntity and doctor tables (OneToMany), and then applying the filter.
         To do this One to Many join (one PermissionEntity has many doctors), we need to use the Join criteria to accomplish it
      */
+
 
     // public static Specification<PermissionEntity> hasDoctorInSpeciality(String speciality) {
     //     return (root, query, builder) -> {

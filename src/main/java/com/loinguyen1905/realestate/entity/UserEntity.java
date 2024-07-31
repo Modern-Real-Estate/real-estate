@@ -55,6 +55,14 @@ public class UserEntity extends BaseEntityAudit {
     @Column(columnDefinition = "MEDIUMTEXT", name = "refresh_token", nullable = true)
     private String refreshToken;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<RoleEntity> roles;
+
     @PrePersist
     public void prePersist() {
         this.status = true;

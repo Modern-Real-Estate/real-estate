@@ -9,10 +9,10 @@ import com.loinguyen1905.realestate.websocket.WebSocketHandler;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
+public class WebSocketConfiguration implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new WebSocketHandler(), "/websocket")
+        registry.addHandler(new WebSocketHandler(), "/message")
                 .setAllowedOrigins("*");
     }
 }

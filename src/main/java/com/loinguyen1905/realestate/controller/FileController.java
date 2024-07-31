@@ -25,8 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
 @RestController
 @RequestMapping("${release.api.prefix}/files")
 public class FileController {
@@ -39,8 +37,8 @@ public class FileController {
     @PostMapping
     @MetaMessage(message = "Upload file success")
     public ResponseEntity<FileDTO> upload(
-        @RequestParam(name = "file", required = false) MultipartFile file,
-        @RequestParam(name = "folder") String folderName
+        @RequestParam(name = "file", required = true) MultipartFile file,
+        @RequestParam(name = "folder", required = true) String folderName
     ) throws Exception {
         FileValidationUtils.validation(file);
         this.fileService.handleCreateDirectory(this.uri + folderName);

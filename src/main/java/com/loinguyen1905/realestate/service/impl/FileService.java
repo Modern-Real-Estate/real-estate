@@ -28,7 +28,7 @@ public class FileService implements IFileService {
         URI uri = new URI(folder);
         Path path = Paths.get(uri);
         File tmpDir = new File(path.toString());
-        if(!tmpDir.isDirectory()) {
+        if (!tmpDir.isDirectory()) {
             try {
                 Files.createDirectories(tmpDir.toPath());
                 System.out.println(">>> Create folder success");
@@ -36,7 +36,8 @@ public class FileService implements IFileService {
                 e.printStackTrace();
                 System.out.println(">>> Exception occurs when try to create new folder");
             }
-        } else System.out.println(">>> folder existing");
+        } else
+            System.out.println(">>> folder existing");
     }
 
     @Override
@@ -44,7 +45,7 @@ public class FileService implements IFileService {
         String uniqueName = System.currentTimeMillis() + "-" + file.getOriginalFilename().replace(" ", "_");
         URI uri = new URI(dest + "/" + uniqueName);
         Path path = Paths.get(uri);
-        try(InputStream inputStream = file.getInputStream()) {
+        try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         }
         return new FileDTO(uniqueName, Instant.now(), path.toString());
@@ -55,12 +56,14 @@ public class FileService implements IFileService {
         URI uri = new URI(dest + "/" + fileName);
         Path path = Paths.get(uri);
         File tmpDir = new File(path.toString());
-        if(!tmpDir.exists() || tmpDir.isDirectory()) throw new CustomRuntimeException("file name not found");
+        if (!tmpDir.exists() || tmpDir.isDirectory())
+            throw new CustomRuntimeException("file name not found");
         return tmpDir.length();
     }
 
     @Override
-    public InputStreamResource getResource(String fileName, String dest) throws FileNotFoundException, URISyntaxException {
+    public InputStreamResource getResource(String fileName, String dest)
+            throws FileNotFoundException, URISyntaxException {
         URI uri = new URI(dest + "/" + fileName);
         Path path = Paths.get(uri);
         File file = new File(path.toString());

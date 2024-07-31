@@ -11,9 +11,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 
 import com.loinguyen1905.realestate.interceptor.ObserverInterceptor;
 import com.loinguyen1905.realestate.interceptor.RestTemplateFilter;
+import com.loinguyen1905.realestate.websocket.WebSocketHandler;
 
 @Configuration
 @SuppressWarnings("null")

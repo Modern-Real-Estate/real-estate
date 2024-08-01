@@ -2,6 +2,12 @@ package com.loinguyen1905.realestate.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loinguyen1905.realestate.entity.UserEntity;
+import com.loinguyen1905.realestate.service.IUserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
@@ -14,7 +20,7 @@ public class UserController {
     // public UserEntity getMethodName(
     //     @PathVariable("username") String username
     // ) {
-    //     userEntity user = userService.handlegetUserByUsername(username);
+    //     UserEntity user = userService.handlegetUserByUsername(username);
     //     return user;
     // }
 }

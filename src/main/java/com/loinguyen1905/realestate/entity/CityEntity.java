@@ -3,6 +3,7 @@ package com.loinguyen1905.realestate.entity;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

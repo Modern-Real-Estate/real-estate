@@ -1,5 +1,8 @@
 package com.loinguyen1905.realestate.model.request;
 
+import java.util.List;
+import java.util.UUID;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -27,4 +30,6 @@ public class RegisterRequest {
 
     @NotBlank
     private String lastName;
+
+    private List<UUID> roles;
 }

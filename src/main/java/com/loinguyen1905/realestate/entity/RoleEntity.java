@@ -3,6 +3,8 @@ package com.loinguyen1905.realestate.entity;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +27,6 @@ public class RoleEntity extends BaseEntityAudit {
     )
     private List<PermissionEntity> permissions;
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     private List<UserEntity> users;
 }

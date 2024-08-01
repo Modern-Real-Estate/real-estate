@@ -1,5 +1,7 @@
 package com.loinguyen1905.realestate.configuration;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.loinguyen1905.realestate.interceptor.ObserverInterceptor;
 import com.loinguyen1905.realestate.interceptor.RestTemplateFilter;
+import com.nimbusds.jose.shaded.gson.Gson;
+import com.nimbusds.jose.shaded.gson.GsonBuilder;
 
 @Configuration
 @SuppressWarnings("null")
@@ -33,6 +37,14 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/storage/**")
                 .addResourceLocations(this.uri);
     }
+
+    @Bean
+    Gson gson() {
+        return new GsonBuilder()
+            .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
+            .create();
+    }
+
 
     @Override
     public void addFormatters(@SuppressWarnings("null") FormatterRegistry formatterRegistry) {

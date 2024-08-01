@@ -12,4 +12,5 @@ import com.loinguyen1905.realestate.entity.PermissionEntity;
 @Repository
 public interface PermissionRepository extends JpaRepository<PermissionEntity, UUID>, JpaSpecificationExecutor<PermissionEntity> {
     void deleteByIdIn(List<UUID> ids);
+    List<PermissionEntity> findByCodeIn(List<String> code);
 }

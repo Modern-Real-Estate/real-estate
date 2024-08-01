@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.loinguyen1905.realestate.converter.AuthenResponseConverter;
 import com.loinguyen1905.realestate.converter.UserConverter;
+import com.loinguyen1905.realestate.entity.RoleEntity;
 import com.loinguyen1905.realestate.entity.UserEntity;
 import com.loinguyen1905.realestate.exception.CustomRuntimeException;
 import com.loinguyen1905.realestate.model.dto.MyUserDetails;
@@ -21,6 +22,7 @@ import com.loinguyen1905.realestate.model.dto.UserDTO;
 import com.loinguyen1905.realestate.model.request.LoginRequest;
 import com.loinguyen1905.realestate.model.request.RegisterRequest;
 import com.loinguyen1905.realestate.model.response.AuthenResponse;
+import com.loinguyen1905.realestate.repository.RoleRepository;
 import com.loinguyen1905.realestate.repository.UserRepository;
 import com.loinguyen1905.realestate.service.IAuthService;
 import com.loinguyen1905.realestate.util.JwtUtils;
@@ -45,6 +47,8 @@ public class AuthService implements IAuthService {
     private ModelMapper modelMapper;
     @Autowired
     private AuthenResponseConverter authenResponseConverter;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public AuthenResponse handleLogin(LoginRequest loginRequest) {
@@ -59,7 +63,9 @@ public class AuthService implements IAuthService {
     @Override
     public AuthenResponse handleRegister(RegisterRequest registerRequest) {
         UserEntity user = this.userConverter.toUserEntity(registerRequest);
+        RoleEntity customerRole = this.modelMapper.map(this.roleRepository.findByCode("customer"), RoleEntity.class);
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        user.setRole(customerRole);
         user = this.userRepository.save(user);
         return this.authenResponseConverter.toAuthenResponse(user, null);
     }

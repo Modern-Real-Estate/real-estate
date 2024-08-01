@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,4 +32,9 @@ public class PermissionEntity extends BaseEntityAudit {
 
     @ManyToMany(mappedBy = "permissions")
     private List<RoleEntity> roles;
+
+    @PrePersist
+    public void prePersist() {
+        this.code = this.apiPath + " " + this.method + " " + this.module;
+    }
 }

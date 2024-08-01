@@ -40,7 +40,7 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public BuildingDTO handleGetBuildings(BuildingSearchRequest buildingSearchRequest, Pageable pageable) {
-        Specification<BuildingEntity> specs = this.buildingConverter.toPermissionSpec(buildingSearchRequest);
+        Specification<BuildingEntity> specs = this.buildingConverter.toBuildingSpec(buildingSearchRequest);
         Page<BuildingEntity> buildings = this.buildingRepository.findAll(specs, pageable);
         return this.modelMapper.map(buildings, BuildingDTO.class);
     }

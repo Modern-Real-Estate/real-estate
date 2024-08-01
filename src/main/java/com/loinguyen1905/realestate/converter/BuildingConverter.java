@@ -18,7 +18,6 @@ import com.loinguyen1905.realestate.entity.RentAreaEntity;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.request.BuildingRequest;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
-import com.loinguyen1905.realestate.model.request.PermissionSearchRequest;
 import com.loinguyen1905.realestate.repository.specification.CustomSpecification;
 import com.loinguyen1905.realestate.util.OverwriteUtils;
 import com.loinguyen1905.realestate.util.StringUtils;
@@ -28,7 +27,7 @@ public class BuildingConverter {
   @Autowired
   private ModelMapper modelMapper;
 
-  public Specification<BuildingEntity> toPermissionSpec(BuildingSearchRequest buildingSearchRequest) {
+  public Specification<BuildingEntity> toBuildingSpec(BuildingSearchRequest buildingSearchRequest) {
         Field[] fields = buildingSearchRequest.getClass().getDeclaredFields();
         List<Specification<BuildingEntity>> specList = new ArrayList<>();
         Arrays.asList(fields).forEach(field -> {
@@ -37,10 +36,10 @@ public class BuildingConverter {
                 field.setAccessible(true);
                 Object value = field.get(buildingSearchRequest);
                 if(value == null) return;
-                if(fieldName.endsWith("From"))
-                    specList.add(CustomSpecification.isGreaterThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 4), null));
-                else if(fieldName.endsWith("To"))
-                    specList.add(CustomSpecification.isLessThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 2), null));
+                else if(fieldName.endsWith("_from"))
+                    specList.add(CustomSpecification.isGreaterThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 5), null));
+                else if(fieldName.endsWith("_to"))
+                    specList.add(CustomSpecification.isLessThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 3), null));
                 else if(value.getClass().getName().equals("java.lang.String"))
                     specList.add(CustomSpecification.isValueLike((String) value, fieldName, null));
                 else if(value instanceof Number)

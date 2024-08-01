@@ -14,17 +14,13 @@ public class UserConverter {
     public ModelMapper modelMapper;
 
     public <T> UserEntity toUserEntity(T object) {
-        UserEntity userEntity = null;
-        if (object instanceof UserDTO userDTO) {
-            if (userDTO.getType() == "customer") {
+        UserEntity user = new UserEntity();
+        if(object instanceof RegisterRequest registerRequest) {
+            user = modelMapper.map(registerRequest, UserEntity.class);
+        } else {
 
-            } else if (userDTO.getType() == "staff") {
-
-            }
-        } else if (object instanceof RegisterRequest registerRequest) {
-            userEntity = modelMapper.map(registerRequest, UserEntity.class);
         }
-        return userEntity;
+        return user;
     }
 
     public UserDTO toUserDTO(UserEntity userEntity) {

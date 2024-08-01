@@ -8,9 +8,15 @@ import com.loinguyen1905.realestate.model.dto.PermissionDTO;
 import com.loinguyen1905.realestate.model.request.PermissionSearchRequest;
 import com.loinguyen1905.realestate.service.IPermissionService;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("${release.api.prefix}/permissions")
 public class PermissionController {
-
     @Autowired
     private IPermissionService permissionService;
 
@@ -40,10 +45,9 @@ public class PermissionController {
     @PostMapping
     public ResponseEntity<PermissionDTO> createPermission(
         @RequestBody PermissionDTO permissionDTO
-    ) {
+    ) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             this.permissionService.handleCreatePermission(permissionDTO)
         );
-    }
-    
+    }   
 }

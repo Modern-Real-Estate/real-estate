@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,13 +31,14 @@ public class BuildingController {
     @Autowired
     private IBuildingService buildingService;
 
-    @GetMapping
+    @GetMapping("/")
     @MetaMessage(message = "Fetch buildings with filter and pageable")
-    public ResponseEntity<List<BuildingDTO>> getBuilding(
+    public ResponseEntity<BuildingDTO> getBuilding(
         @ModelAttribute(SystemConstant.MODEL)
-        BuildingSearchRequest buildingSearchRequest
+        BuildingSearchRequest buildingSearchRequest,
+        Pageable pageable
     ) {
-        return ResponseEntity.ok().body(this.buildingService.handleGetBuildings(buildingSearchRequest));
+        return ResponseEntity.ok().body(this.buildingService.handleGetBuildings(buildingSearchRequest, pageable));
     }
 
     @GetMapping("/{id}")

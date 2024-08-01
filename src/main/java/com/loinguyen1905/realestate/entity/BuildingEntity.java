@@ -35,11 +35,17 @@ public class BuildingEntity extends BaseEntityAudit {
     @Column(name = "level")
     private String level;
 
-    @Column(name = "rentprice")
+    @Column(name = "rent_price")
     private String rentPrice;
 
-    @Column(name = "rentprice_description")
+    @Column(name = "purchase_price")
+    private String purchasePrice;
+
+    @Column(name = "rent_price_description")
     private String rentPriceDescription;
+    
+    @Column(name = "purchase_price_description")
+    private String purchasePriceDescription;
 
     @Column(name = "service_fee")
     private String serviceFee;
@@ -68,7 +74,7 @@ public class BuildingEntity extends BaseEntityAudit {
     @Column(name = "renttime")
     private String rentTime;
 
-    @Column(name = "decorationtime")
+    @Column(name = "decoration_time")
     private String decorationTime;
 
     @Column(name = "brokerage_fee")

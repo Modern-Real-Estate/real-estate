@@ -17,7 +17,6 @@ import com.loinguyen1905.realestate.repository.custom.BuildingRepositoryCustom;
 @Repository
 public interface BuildingRepository extends JpaRepository<BuildingEntity, UUID>, BuildingRepositoryCustom, JpaSpecificationExecutor<BuildingEntity> {
     Void deleteByIdIn(List<UUID> ids);
-    Page<BuildingEntity> findAll(Specification<BuildingEntity> specification, Pageable pageable);
     String findTopNBuildingRatingSQL = """
         select j.*, rank() over(partition by j.id order by j.rating desc) as ranking from (
             select building.*, round(avg(r.value), 2) as rating from building as b 

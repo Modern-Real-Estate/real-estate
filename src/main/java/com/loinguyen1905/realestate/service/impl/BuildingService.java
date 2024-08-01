@@ -6,6 +6,9 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.loinguyen1905.realestate.converter.BuildingConverter;
@@ -36,9 +39,10 @@ public class BuildingService implements IBuildingService {
     private ModelMapper modelMapper;
 
     @Override
-    public List<BuildingDTO> handleGetBuildings(BuildingSearchRequest buildingSearchRequest) {
-        List<BuildingEntity> buildings = this.buildingRepository.findAll(buildingSearchRequest);
-        return buildings.stream().map(item -> this.buildingConverter.toBuildingDTO(item)).toList();
+    public BuildingDTO handleGetBuildings(BuildingSearchRequest buildingSearchRequest, Pageable pageable) {
+        Specification<BuildingEntity> specs = this.buildingConverter.toPermissionSpec(buildingSearchRequest);
+        Page<BuildingEntity> buildings = this.buildingRepository.findAll(specs, pageable);
+        return this.modelMapper.map(buildings, BuildingDTO.class);
     }
 
     @Override

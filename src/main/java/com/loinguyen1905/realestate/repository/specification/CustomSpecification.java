@@ -1,64 +1,84 @@
 package com.loinguyen1905.realestate.repository.specification;
 
 import java.util.List;
-import java.util.UUID;
-
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.util.Pair;
-import org.springframework.lang.Nullable;
-
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 
 public class CustomSpecification<T> {
 
     public CustomSpecification() {}
 
-    public static <T, F> Join<T, F> joinTable(Class<F> cls, String tableName, Root<T> root) {
-        Join<T, F> joining = root.join(tableName);
-        return joining;
+    // public static <F> Class<F> constructInstance(Pair<Class<F>, String> joining) throws Exception {
+    //     String entityName = StringUtils.convertSnakeToCamelCase(joining) + "Entity";
+    //     Class<F> clazz = (Class<F>) Class.forName("com.loinguyen1905.realestate.entity." + entityName);
+    //     return clazz;
+    // }
+
+    // public static <T, F> Join<T, F> performJoin(Class<F> fClass, Root<T> root, Pair<Class<F>, String> joining) {
+    //     Join<T, F> join = root.join(joining + "s");
+    //     return join;
+    // }
+
+    public static <T, F> Join<T, F> oneToMany(Pair<Class<F>, String> joining, Root<T> root) {
+        return null;
     }
 
-    public static <T> Specification<T> construct() {
+    public static <T, F> Path<T> manyToOne(Pair<Class<F>, String> joining, Root<T> root) {
+        return null;
+    }
+
+    public static <T, F> Join<T, ?> joinTableManager(Pair<Class<F>, String> joining, Root<T> root) {
+        if(joining.getSecond().endsWith("_O")) {
+            String finalName = joining.getSecond().substring(0, joining.getSecond().indexOf("_O")) + "s";
+            Join<T, F> join = root.join(finalName);
+            return join;
+        } {
+            String finalName = joining.getSecond().substring(0, joining.getSecond().indexOf("_M"));
+            Join<T, F> join = root.join(finalName);
+            return join;
+        }
+    }
+
+    public static <T, F>  Specification<T> construct() {
         return (root, query, builder) -> builder.isNotNull(root.get("id"));
     }
 
-    public static <T> Specification<T> isValueLike(String stringLike, String col, Pair<Class<?>, String> tableJoin) {
+    public static <T, F> Specification<T> isValueLike(String stringLike, String col, Pair<Class<F>, String> joining) {
         return (root, query, builder) -> builder.like(
-            (tableJoin != null ? joinTable(tableJoin.getFirst(), tableJoin.getSecond(), root) : root)
+            (joining != null ? joinTableManager(joining, root) : root)
             .get(col), "%" + stringLike + "%");
     }
 
-    public static <T> Specification<T> isWithinValueRange(int min, int max, String col, Pair<Class<?>, String> tableJoin) {
+    public static <T, F> Specification<T> isWithinValueRange(int min, int max, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.between(
-            (tableJoin != null ? joinTable(tableJoin.getFirst(), tableJoin.getSecond(), root) : root)
+            (joining != null ? joinTableManager(joining, root) : root)
             .get(col), min, max);
     }
 
-    public static <T> Specification<T> isEqualValue(int value, String col, Pair<Class<?>, String> tableJoin) {
+    public static <T, F> Specification<T> isEqualValue(Object value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
-            (tableJoin != null ? joinTable(tableJoin.getFirst(), tableJoin.getSecond(), root) : root)
+            (joining != null ? joinTableManager(joining, root) : root)
             .get(col), value);
     }
     
-    public static <T> Specification<T> isGreaterThanOrEqual(int value, String col, Pair<Class<?>, String> tableJoin) {
+    public static <T, F> Specification<T> isGreaterThanOrEqual(int value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(
-            (tableJoin != null ? joinTable(tableJoin.getFirst(), tableJoin.getSecond(), root) : root)
+            (joining != null ? joinTableManager(joining, root) : root)
             .get(col), value);
     }
 
-    public static <T> Specification<T> isLessThanOrEqual(int value, String col, Pair<Class<?>, String> tableJoin) {
+    public static <T, F> Specification<T> isLessThanOrEqual(int value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(
-            (tableJoin != null ? joinTable(tableJoin.getFirst(), tableJoin.getSecond(), root) : root)
+            (joining != null ? joinTableManager(joining, root) : root)
             .get(col), value);
     }
 
-    public static <T, F> Specification<T> isInList(List<String> list, String col, Pair<Class<?>, String> tableJoin) {
+    public static <T, F> Specification<T> isInList(List<String> list, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.in(
-            (tableJoin != null ? joinTable(tableJoin.getFirst(), tableJoin.getSecond(), root) : root)
+            (joining != null ? joinTableManager(joining, root) : root)
             .get(col)
         );
     }

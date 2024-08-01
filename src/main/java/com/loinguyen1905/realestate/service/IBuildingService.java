@@ -3,12 +3,14 @@ package com.loinguyen1905.realestate.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
 import com.loinguyen1905.realestate.model.request.BuildingRequest;
 
 public interface IBuildingService {
-    List<BuildingDTO> handleGetBuildings(BuildingSearchRequest buildingSearchRequest);
+    BuildingDTO handleGetBuildings(BuildingSearchRequest buildingSearchRequest, Pageable pageable);
 
     BuildingDTO handleGetBuildingById(UUID id);
 

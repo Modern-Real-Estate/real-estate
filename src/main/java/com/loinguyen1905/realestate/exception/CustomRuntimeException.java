@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomRuntimeException extends RuntimeException {
-    private Integer statusCode;
     private String message;
+    private Integer statusCode;
     private Object error;
 
     public CustomRuntimeException(String message) {

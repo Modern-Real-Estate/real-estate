@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.interceptor;
+package com.loinguyen1905.realestate.core.interceptor;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.Resource;

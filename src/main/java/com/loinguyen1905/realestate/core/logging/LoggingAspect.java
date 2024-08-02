@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.interceptor.logging;
+package com.loinguyen1905.realestate.core.logging;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

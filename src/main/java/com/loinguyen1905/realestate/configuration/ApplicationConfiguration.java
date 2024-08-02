@@ -16,8 +16,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.loinguyen1905.realestate.interceptor.PermissionInterceptor;
-import com.loinguyen1905.realestate.interceptor.logging.RestTemplateFilter;
+import com.loinguyen1905.realestate.core.interceptor.PermissionInterceptor;
+import com.loinguyen1905.realestate.core.logging.RestTemplateFilter;
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.GsonBuilder;
 

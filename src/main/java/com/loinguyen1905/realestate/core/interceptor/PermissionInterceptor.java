@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.interceptor;
+package com.loinguyen1905.realestate.core.interceptor;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             List<PermissionDTO> permissionDTOs = SecurityUtils.getCurrentUsersPermissions().get()
                 .stream().map(item -> StringToPermissionUtils.toPermission(item)).toList();
             Boolean isAllow = permissionDTOs.stream().anyMatch(item -> (item.getApiPath().equals(path) && item.getMethod().equals(httpMethod)) || item.getApiPath().equals("/api/v1/"));
-            if(isAllow == false) throw new CustomRuntimeException("Cannot use endpoint " + path, 403);
+            if(isAllow == false) throw new CustomRuntimeException("Cannot use endpoint " + path, 403, "Fornidden");
         }
         return true;
     }

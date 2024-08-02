@@ -19,6 +19,7 @@ import jakarta.persistence.*;
 
 @Primary
 @Repository
+// Old verison may not Compatible
 public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom  {
     
     @Autowired
@@ -57,7 +58,7 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom  {
     public static String joinTable(BuildingSearchRequest buildingSearchRequest) {
         StringBuilder sql = new StringBuilder("select * from building ");
         if(buildingSearchRequest.getAreaFrom() != null || buildingSearchRequest.getAreaTo() != null) sql.append(" right join rent_area on rent_area.building_id = building.id");
-        if(buildingSearchRequest.getDistrictId() != null) sql.append(" inner join district on building.id = district.building_id ");
+        if(buildingSearchRequest.getDistrictCodes() != null) sql.append(" inner join district on building.id = district.building_id ");
         // if()
         return sql.toString();
     }

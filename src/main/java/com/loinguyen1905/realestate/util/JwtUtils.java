@@ -2,6 +2,8 @@ package com.loinguyen1905.realestate.util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,8 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
 import com.loinguyen1905.realestate.model.dto.MyUserDetails;
+import com.loinguyen1905.realestate.model.dto.RoleDTO;
+import com.loinguyen1905.realestate.model.dto.PermissionDTO;
 
 @Component
 @PropertySource("classpath:application-dev.properties")
@@ -28,11 +32,14 @@ public class JwtUtils {
     private String jwtRefreshTokenExpiration;
     
     public JwtClaimsSet createJwtClaimsSet(MyUserDetails myUserDetails, Instant now, Instant validity) {
+        List<PermissionDTO> permissions = myUserDetails.getRole() instanceof RoleDTO ? myUserDetails.getRole().getPermissions() : new ArrayList<>();
+        myUserDetails.setRole(null);
         return JwtClaimsSet.builder()
             .issuedAt(now)
             .expiresAt(validity)
             .subject(myUserDetails.getUsername())
             .claim("user", myUserDetails)
+            .claim("permissions", permissions)
             .build();
     }
 
@@ -43,10 +50,9 @@ public class JwtUtils {
             accessTokenValidity = now.plus(Long.parseLong(jwtAccessTokenExpiration), ChronoUnit.SECONDS), 
             refreshTokenValidity = now.plus(Long.parseLong(jwtRefreshTokenExpiration), ChronoUnit.SECONDS);
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
-        String
-            accessToken = jwtEncoder.encode(JwtEncoderParameters
-                .from(jwsHeader, createJwtClaimsSet(myUserDetails, now, accessTokenValidity))).getTokenValue(),
-            refreshToken =jwtEncoder.encode(JwtEncoderParameters
+        String accessToken = jwtEncoder.encode(JwtEncoderParameters
+                .from(jwsHeader, createJwtClaimsSet(myUserDetails, now, accessTokenValidity))).getTokenValue();
+        String refreshToken =jwtEncoder.encode(JwtEncoderParameters
                 .from(jwsHeader, createJwtClaimsSet(myUserDetails, now, refreshTokenValidity))).getTokenValue();
         return Pair.of(accessToken, refreshToken);
     }

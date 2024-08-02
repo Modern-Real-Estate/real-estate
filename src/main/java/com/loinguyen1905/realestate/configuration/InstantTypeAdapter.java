@@ -29,7 +29,6 @@ public class InstantTypeAdapter implements JsonSerializer<Instant>, JsonDeserial
   @Override
   public Instant deserialize(JsonElement json, Type typeOfT,
       JsonDeserializationContext context) throws JsonParseException {
-
     return Instant.parse(json.getAsString());
   }
 }

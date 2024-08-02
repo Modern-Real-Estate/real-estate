@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 import com.loinguyen1905.realestate.exception.CustomRuntimeException;
+import com.loinguyen1905.realestate.util.JwtUtils;
 import com.loinguyen1905.realestate.util.SecurityUtils;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
@@ -50,6 +51,11 @@ public class JwtConfiguration {
                 throw new CustomRuntimeException("refresh token invalid", 401);
             }
         };
+    }
+
+    @Bean
+    JwtUtils jwtUtils() {
+        return new JwtUtils();
     }
 
     @Bean

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loinguyen1905.realestate.common.SystemConstant;
-import com.loinguyen1905.realestate.model.dto.UserDTO;
 import com.loinguyen1905.realestate.model.request.LoginRequest;
 import com.loinguyen1905.realestate.model.request.RegisterRequest;
 import com.loinguyen1905.realestate.model.response.AuthenResponse;

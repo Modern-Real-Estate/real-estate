@@ -16,8 +16,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.loinguyen1905.realestate.interceptor.ObserverInterceptor;
-import com.loinguyen1905.realestate.interceptor.RestTemplateFilter;
+import com.loinguyen1905.realestate.interceptor.PermissionInterceptor;
+import com.loinguyen1905.realestate.interceptor.logging.RestTemplateFilter;
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.GsonBuilder;
 
@@ -27,15 +27,17 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     @Value("${realestate.upload-file.base-uri}")
     private String uri;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new ObserverInterceptor());
+    @Bean
+    PermissionInterceptor getPermissionInterceptor() {
+        return new PermissionInterceptor();
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/storage/**")
-                .addResourceLocations(this.uri);
+    @Bean
+    public RestTemplate restTemplate() {
+        final RestTemplate restTemplate = new RestTemplate(
+                new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
+        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateFilter()));
+        return restTemplate;
     }
 
     @Bean
@@ -45,19 +47,26 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
             .create();
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        String[] whiteList = {
+            "/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh", 
+            "/storage/**"
+        };
+        registry.addInterceptor(getPermissionInterceptor())
+                .excludePathPatterns(whiteList);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/storage/**")
+                .addResourceLocations(this.uri);
+    }
 
     @Override
     public void addFormatters(@SuppressWarnings("null") FormatterRegistry formatterRegistry) {
         DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
         registrar.setUseIsoFormat(true);
         registrar.registerFormatters(formatterRegistry);
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        final RestTemplate restTemplate = new RestTemplate(
-                new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateFilter()));
-        return restTemplate;
     }
 }

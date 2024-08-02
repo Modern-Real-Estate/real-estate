@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -13,42 +14,28 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import com.loinguyen1905.realestate.entity.BuildingEntity;
+import com.loinguyen1905.realestate.entity.DistrictEntity;
 import com.loinguyen1905.realestate.entity.PermissionEntity;
 import com.loinguyen1905.realestate.entity.RentAreaEntity;
 import com.loinguyen1905.realestate.model.dto.BuildingDTO;
 import com.loinguyen1905.realestate.model.request.BuildingRequest;
 import com.loinguyen1905.realestate.model.request.BuildingSearchRequest;
 import com.loinguyen1905.realestate.repository.specification.CustomSpecification;
+import com.loinguyen1905.realestate.util.NormalSpecificationUtils;
 import com.loinguyen1905.realestate.util.OverwriteUtils;
-import com.loinguyen1905.realestate.util.StringUtils;
 
 @Component
 public class BuildingConverter {
+  
   @Autowired
   private ModelMapper modelMapper;
 
   public Specification<BuildingEntity> toBuildingSpec(BuildingSearchRequest buildingSearchRequest) {
-        Field[] fields = buildingSearchRequest.getClass().getDeclaredFields();
-        List<Specification<BuildingEntity>> specList = new ArrayList<>();
-        Arrays.asList(fields).forEach(field -> {
-            try {
-                String fieldName = StringUtils.convertCamelToSnake(field.getName());
-                field.setAccessible(true);
-                Object value = field.get(buildingSearchRequest);
-                if(value == null) return;
-                else if(fieldName.endsWith("_from"))
-                    specList.add(CustomSpecification.isGreaterThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 5), null));
-                else if(fieldName.endsWith("_to"))
-                    specList.add(CustomSpecification.isLessThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 3), null));
-                else if(value.getClass().getName().equals("java.lang.String"))
-                    specList.add(CustomSpecification.isValueLike((String) value, fieldName, null));
-                else if(value instanceof Number)
-                    specList.add(CustomSpecification.isEqualValue((Integer) value, fieldName, null));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        return Specification.allOf(specList);
+        List<Specification<BuildingEntity>> buildingSpecList = NormalSpecificationUtils.toNormalSpec(buildingSearchRequest);
+        if(buildingSearchRequest.getDistrictCodes() != null) {
+          buildingSpecList.add(CustomSpecification.isInList(buildingSearchRequest.getDistrictCodes(), "code", Pair.of(DistrictEntity.class, "district_M")));
+        }
+        return Specification.allOf(buildingSpecList);
     }
 
   public BuildingDTO toBuildingDTO(BuildingEntity buildingEntity) {

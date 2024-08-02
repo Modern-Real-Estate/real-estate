@@ -27,8 +27,7 @@ public class BuildingSearchRequest extends AbstractDTO<BuildingSearchRequest> {
     private String rentPriceTo;
     private String managerName;
     private String managerPhone;
-    private List<UUID> typeCode;
+    private List<String> typeCodes;
     private UUID staffId;
-    private UUID districtId;
-    private Pair<String, String> order;
+    private List<String> districtCodes;
 }

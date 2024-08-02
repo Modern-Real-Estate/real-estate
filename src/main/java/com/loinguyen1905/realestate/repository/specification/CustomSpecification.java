@@ -77,10 +77,9 @@ public class CustomSpecification<T> {
     }
 
     public static <T, F> Specification<T> isInList(List<String> list, String col, Pair<Class<F>, String> joining) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.in(
+        return (root, query, criteriaBuilder) ->
             (joining != null ? joinTableManager(joining, root) : root)
-            .get(col)
-        );
+            .get(col).in(list);
     }
     /*
         Second request parameter filter: Get PermissionEntitys that have doctors with a specific speciality.

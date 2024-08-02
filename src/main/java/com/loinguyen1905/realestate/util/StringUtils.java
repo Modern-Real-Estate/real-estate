@@ -1,11 +1,19 @@
 package com.loinguyen1905.realestate.util;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import io.jsonwebtoken.lang.Arrays;
+
 public final class StringUtils {
     public static Boolean isNullOrEmpty(String s) {
         return s.equals("") || s == null;
     }
     public static String convertCamelToSnake(String camelCaseString) {
-        return camelCaseString
+        String[] camelCaseStrings = camelCaseString.split(" ");
+        return Arrays.asList(camelCaseStrings).stream().collect(Collectors.joining("_"))
                 .replaceAll("([a-z])([A-Z]+)", "$1_$2")
                 .toLowerCase();
     }

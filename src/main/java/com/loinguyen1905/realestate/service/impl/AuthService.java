@@ -25,34 +25,46 @@ import com.loinguyen1905.realestate.model.response.AuthenResponse;
 import com.loinguyen1905.realestate.repository.RoleRepository;
 import com.loinguyen1905.realestate.repository.UserRepository;
 import com.loinguyen1905.realestate.service.IAuthService;
+import com.loinguyen1905.realestate.util.AuthenticationUtils;
 import com.loinguyen1905.realestate.util.JwtUtils;
-import com.loinguyen1905.realestate.util.SecurityUtils;
 
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
 public class AuthService implements IAuthService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserConverter userConverter;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private SecurityUtils securityUtils;
-    @Autowired
-    private JwtUtils jwtUtils;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private AuthenResponseConverter authenResponseConverter;
-    @Autowired
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final UserConverter userConverter;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
+    private final ModelMapper modelMapper;
+    private final AuthenResponseConverter authenResponseConverter;
+    private final RoleRepository roleRepository;
+    private final AuthenticationUtils authenticationUtils;
+
+    public AuthService(UserRepository userRepository,
+        UserConverter userConverter,
+        AuthenticationUtils authenticationUtils,
+        PasswordEncoder passwordEncoder,
+        JwtUtils jwtUtils,
+        ModelMapper modelMapper,
+        AuthenResponseConverter authenResponseConverter,
+        RoleRepository roleRepository
+    ) {
+        this.userRepository = userRepository;
+        this.userConverter = userConverter;
+        this.authenticationUtils = authenticationUtils;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+        this.modelMapper = modelMapper;
+        this.authenResponseConverter = authenResponseConverter;
+        this.roleRepository = roleRepository;
+    }
+
 
     @Override
     public AuthenResponse handleLogin(LoginRequest loginRequest) {
-        Authentication authenticResults = this.securityUtils.authentication(loginRequest);
+        Authentication authenticResults = this.authenticationUtils.authentication(loginRequest);
         Pair<String, String> tokenPair = this.jwtUtils.createTokenPair((MyUserDetails) authenticResults.getPrincipal());
         handleUpdateUsersRefreshToken(loginRequest.getUsername(), tokenPair.getSecond());
         return authenResponseConverter
@@ -63,7 +75,7 @@ public class AuthService implements IAuthService {
     @Override
     public AuthenResponse handleRegister(RegisterRequest registerRequest) {
         UserEntity user = this.userConverter.toUserEntity(registerRequest);
-        RoleEntity customerRole = this.modelMapper.map(this.roleRepository.findByCode("customer"), RoleEntity.class);
+        RoleEntity customerRole = this.modelMapper.map(this.roleRepository.findByCode("admin"), RoleEntity.class);
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
         user.setRole(customerRole);
         user = this.userRepository.save(user);

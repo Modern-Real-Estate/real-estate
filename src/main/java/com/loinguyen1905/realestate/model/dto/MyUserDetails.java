@@ -1,6 +1,7 @@
 package com.loinguyen1905.realestate.model.dto;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,12 +25,12 @@ public class MyUserDetails implements UserDetails {
     private Boolean status;
     private String email;
     private String phone;
-    private List<String> roles;
+    private RoleDTO role;
     private String type;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
     }
 
     @Override

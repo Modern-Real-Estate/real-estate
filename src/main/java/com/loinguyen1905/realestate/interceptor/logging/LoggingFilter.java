@@ -1,9 +1,8 @@
-package com.loinguyen1905.realestate.interceptor;
+package com.loinguyen1905.realestate.interceptor.logging;
 
 import java.io.IOException;
 
 import org.springframework.stereotype.Component;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import jakarta.servlet.Filter;

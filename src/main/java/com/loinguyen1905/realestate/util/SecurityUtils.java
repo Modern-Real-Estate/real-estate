@@ -1,6 +1,7 @@
 package com.loinguyen1905.realestate.util;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -17,24 +18,22 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+import com.loinguyen1905.realestate.model.dto.PermissionDTO;
 import com.loinguyen1905.realestate.model.request.LoginRequest;
 
 @Component
 public class SecurityUtils {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
-    @Autowired
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
-
     @Value("${realestate.jwt.access_token-validity-in-seconds}")
     private String jwtExpiration;
 
-    public Authentication authentication(LoginRequest loginRequest) {
-        UsernamePasswordAuthenticationToken 
-            authenticationToken = 
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        return authentication;
+    public static Optional<List<String>> getCurrentUsersPermissions() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(securityContext.getAuthentication().getPrincipal() instanceof Jwt jwt 
+            ? jwt.getClaimAsStringList("permissions")
+            : null
+        );
     }
 
     public static Optional<String> getCurrentUserLogin() {

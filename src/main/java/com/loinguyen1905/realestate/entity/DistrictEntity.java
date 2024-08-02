@@ -14,7 +14,7 @@ public class DistrictEntity extends LocationEntity {
     @OneToMany(mappedBy = "district", fetch = FetchType.LAZY)
     private List<BuildingEntity> buildingEntities = new ArrayList<BuildingEntity>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "city_id")
     private CityEntity city;
 }

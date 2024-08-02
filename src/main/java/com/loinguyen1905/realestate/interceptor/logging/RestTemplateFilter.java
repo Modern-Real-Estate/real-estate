@@ -1,4 +1,4 @@
-package com.loinguyen1905.realestate.interceptor;
+package com.loinguyen1905.realestate.interceptor.logging;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

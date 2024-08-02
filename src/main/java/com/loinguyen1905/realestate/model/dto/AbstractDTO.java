@@ -10,7 +10,6 @@ import org.springframework.core.annotation.Order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -26,9 +25,9 @@ public class AbstractDTO<T> implements Serializable {
     private static final long serialVersionUID = 7213600440729202783L;
     private UUID id;
     // @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
-    private Instant createdDate;
+    private String createdDate;
     // @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
-    private Instant updatedDate;
+    private String updatedDate;
     private String createdBy;
     private String updatedBy;
     private Integer maxPageItems;

@@ -1,7 +1,6 @@
 package com.loinguyen1905.realestate.model.dto;
 
 import java.util.List;
-import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;

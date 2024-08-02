@@ -2,6 +2,9 @@ package com.loinguyen1905.realestate.entity;
 
 import java.util.List;
 
+import com.loinguyen1905.realestate.util.StringUtils;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -30,11 +33,12 @@ public class PermissionEntity extends BaseEntityAudit {
     @Column(nullable = true, name = "module")
     private String module;
 
-    @ManyToMany(mappedBy = "permissions")
+    @ManyToMany(mappedBy = "permissions", cascade = CascadeType.PERSIST)
     private List<RoleEntity> roles;
 
     @PrePersist
     public void prePersist() {
-        this.code = this.apiPath + " " + this.method + " " + this.module;
+        String create = this.apiPath + " " + this.method + " " + this.module;
+        this.code = StringUtils.convertCamelToSnake(create);
     }
 }
